@@ -45,6 +45,11 @@ const char* EmotiBitPacket::TypeTag::TIMESTAMP_UTC = "TU\0";
 const char* EmotiBitPacket::TypeTag::TIMESTAMP_CROSS_TIME = "TX\0";
 const char* EmotiBitPacket::TypeTag::EMOTIBIT_MODE = "EM\0";
 const char* EmotiBitPacket::TypeTag::EMOTIBIT_INFO = "EI\0";
+const char* EmotiBitPacket::TypeTag::HEART_RATE = "HR\0";
+const char* EmotiBitPacket::TypeTag::INTER_BEAT_INTERVAL = "BI\0";
+const char* EmotiBitPacket::TypeTag::SKIN_CONDUCTANCE_RESPONSE_AMPLITUDE = "SA\0";
+const char* EmotiBitPacket::TypeTag::SKIN_CONDUCTANCE_RESPONSE_FREQ = "SF\0";
+const char* EmotiBitPacket::TypeTag::SKIN_CONDUCTANCE_RESPONSE_RISE_TIME = "SR\0";
 // Computer data TypeTags (sent over reliable channel e.g. Control)
 const char* EmotiBitPacket::TypeTag::GPS_LATLNG = "GL\0";
 const char* EmotiBitPacket::TypeTag::GPS_SPEED = "GS\0";
@@ -78,12 +83,18 @@ const char* EmotiBitPacket::PayloadLabel::POWER_STATUS = "PS\0";
 
 
 const char EmotiBitPacket::PACKET_DELIMITER_CSV = '\n';
-const uint8_t nAperiodicTypeTags = 2;
-const uint8_t nUserMessagesTypeTags = 1;
-const char* const EmotiBitPacket::TypeTagGroups::APERIODIC[nAperiodicTypeTags] = {EmotiBitPacket::TypeTag::DATA_CLIPPING,
-    EmotiBitPacket::TypeTag::DATA_OVERFLOW};
-const char* const EmotiBitPacket::TypeTagGroups::USER_MESSAGES[nUserMessagesTypeTags] = {EmotiBitPacket::TypeTag::USER_NOTE};
-
+//const uint8_t nAperiodicTypeTags = 2;
+//const uint8_t nUserMessagesTypeTags = 1;
+const char* const EmotiBitPacket::TypeTagGroups::APERIODIC[] = 
+		{
+		EmotiBitPacket::TypeTag::HEART_RATE, 
+		EmotiBitPacket::TypeTag::INTER_BEAT_INTERVAL, 
+		EmotiBitPacket::TypeTag::SKIN_CONDUCTANCE_RESPONSE_AMPLITUDE,
+		EmotiBitPacket::TypeTag::SKIN_CONDUCTANCE_RESPONSE_RISE_TIME
+		};
+uint8_t EmotiBitPacket::TypeTagGroups::NUM_APERIODIC = sizeof(EmotiBitPacket::TypeTagGroups::APERIODIC) / sizeof(EmotiBitPacket::TypeTagGroups::APERIODIC[0]);
+const char* const EmotiBitPacket::TypeTagGroups::USER_MESSAGES[] = {EmotiBitPacket::TypeTag::USER_NOTE};
+uint8_t EmotiBitPacket::TypeTagGroups::NUM_USER_MESSAGES = sizeof(EmotiBitPacket::TypeTagGroups::USER_MESSAGES) / sizeof(EmotiBitPacket::TypeTagGroups::USER_MESSAGES[0]);
 //vector<string> EmotiBitPacket::TypeTag::APERIODIC.push_back(EmotiBitPacket::TypeTag::DATA_CLIPPING);
 
 #ifdef ARDUINO

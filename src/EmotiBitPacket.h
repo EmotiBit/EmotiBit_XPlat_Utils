@@ -208,13 +208,19 @@ public:
 		static const char* PING;
 		static const char* PONG;
 		static const char* EMOTIBIT_DEBUG;
-       
+		static const char* HEART_RATE;
+		static const char* INTER_BEAT_INTERVAL;
+		static const char* SKIN_CONDUCTANCE_RESPONSE_AMPLITUDE;
+		static const char* SKIN_CONDUCTANCE_RESPONSE_FREQ;
+		static const char* SKIN_CONDUCTANCE_RESPONSE_RISE_TIME;
 //        static vector<string> APERIODIC;
 	};
     
   class TypeTagGroups
 	{
   public:
+	  static uint8_t NUM_APERIODIC;
+	  static uint8_t NUM_USER_MESSAGES;
       static const char* const APERIODIC[];
       static const char* const USER_MESSAGES[];
   };
