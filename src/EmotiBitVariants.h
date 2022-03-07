@@ -15,6 +15,7 @@ public:
 	static const char* EMOTIBIT_SKU_EM;
 	static const char HARDWARE_VERSION_PREFIX = 'V';
 	static const int EMOTIBIT_SKU_LENGTH = 3;
+	static const int BARCODE_SERIAL_NUM_LENGTH = 7;  // Each EmotiBit has a 7 digit serial number
 };
 
 enum class EmotiBitVariantDataFormat {
