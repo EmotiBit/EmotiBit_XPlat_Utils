@@ -31,5 +31,6 @@ float DigitalFilter::filter(float inputSample)
 	else
 	{
 		// resolve for other filter types
+		return 0.0; // gcc must have a return type at the end not void function
 	}
 }
