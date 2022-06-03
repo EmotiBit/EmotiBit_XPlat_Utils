@@ -225,7 +225,7 @@ public:
 	  static uint8_t NUM_COMPOSITE_PAYLOAD;
       static const char* const APERIODIC[];
       static const char* const USER_MESSAGES[];
-	  static const char* const COMPOSITE_PAYLOAD[];
+	  static const char* const COMPOSITE_PAYLOAD[];  //!< Array to hold typetags which contain multiple types of information in payload
   };
 
 	class PayloadLabel
