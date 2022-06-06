@@ -80,8 +80,8 @@ const char* EmotiBitPacket::PayloadLabel::CONTROL_PORT = "CP\0";
 const char* EmotiBitPacket::PayloadLabel::DATA_PORT = "DP\0";
 const char* EmotiBitPacket::PayloadLabel::RECORDING_STATUS = "RS\0";
 const char* EmotiBitPacket::PayloadLabel::POWER_STATUS = "PS\0";
-const char* EmotiBitPacket::PayloadLabel::LSL_MARKER_DESTINATION_TIMESTAMP = "TSC\0";
-const char* EmotiBitPacket::PayloadLabel::LSL_MARKER_SOURCE_TIMESTAMP = "LM\0";
+const char* EmotiBitPacket::PayloadLabel::LSL_MARKER_RX_TIMESTAMP = "LR\0";
+const char* EmotiBitPacket::PayloadLabel::LSL_MARKER_SRC_TIMESTAMP = "LM\0";
 const char* EmotiBitPacket::PayloadLabel::LSL_LOCAL_CLOCK_TIMESTAMP = "LC\0";
 const char* EmotiBitPacket::PayloadLabel::LSL_MARKER_DATA = "LD\0";
 

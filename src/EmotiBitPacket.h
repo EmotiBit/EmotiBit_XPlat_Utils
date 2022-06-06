@@ -235,8 +235,8 @@ public:
 		static const char* DATA_PORT;
 		static const char* RECORDING_STATUS;
 		static const char* POWER_STATUS;
-		static const char* LSL_MARKER_DESTINATION_TIMESTAMP;
-		static const char* LSL_MARKER_SOURCE_TIMESTAMP;
+		static const char* LSL_MARKER_RX_TIMESTAMP;
+		static const char* LSL_MARKER_SRC_TIMESTAMP;
 		static const char* LSL_LOCAL_CLOCK_TIMESTAMP;
 		static const char* LSL_MARKER_DATA;
 	};
