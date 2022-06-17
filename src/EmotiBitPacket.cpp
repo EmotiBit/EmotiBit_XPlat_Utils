@@ -40,6 +40,7 @@ const char* EmotiBitPacket::TypeTag::RESET = "RS\0"; // still necessary?
 const char* EmotiBitPacket::TypeTag::EMOTIBIT_DEBUG = "DB\0";
 const char* EmotiBitPacket::TypeTag::ACK = "AK\0";
 const char* EmotiBitPacket::TypeTag::REQUEST_DATA = "RD\0";
+const char* EmotiBitPacket::TypeTag::TIMESTAMP_EMOTIBIT = "TE\0";
 const char* EmotiBitPacket::TypeTag::TIMESTAMP_LOCAL = "TL\0";
 const char* EmotiBitPacket::TypeTag::TIMESTAMP_UTC = "TU\0";
 const char* EmotiBitPacket::TypeTag::TIMESTAMP_CROSS_TIME = "TX\0";
@@ -79,12 +80,17 @@ const char* EmotiBitPacket::PayloadLabel::CONTROL_PORT = "CP\0";
 const char* EmotiBitPacket::PayloadLabel::DATA_PORT = "DP\0";
 const char* EmotiBitPacket::PayloadLabel::RECORDING_STATUS = "RS\0";
 const char* EmotiBitPacket::PayloadLabel::POWER_STATUS = "PS\0";
+const char* EmotiBitPacket::PayloadLabel::LSL_MARKER_RX_TIMESTAMP = "LR\0";
+const char* EmotiBitPacket::PayloadLabel::LSL_MARKER_SRC_TIMESTAMP = "LM\0";
+const char* EmotiBitPacket::PayloadLabel::LSL_LOCAL_CLOCK_TIMESTAMP = "LC\0";
+const char* EmotiBitPacket::PayloadLabel::LSL_MARKER_DATA = "LD\0";
 
 
 
 const char EmotiBitPacket::PACKET_DELIMITER_CSV = '\n';
 //const uint8_t nAperiodicTypeTags = 2;
 //const uint8_t nUserMessagesTypeTags = 1;
+// Defining TypeTag groups
 const char* const EmotiBitPacket::TypeTagGroups::APERIODIC[] = 
 		{
 		EmotiBitPacket::TypeTag::HEART_RATE, 
@@ -96,7 +102,12 @@ uint8_t EmotiBitPacket::TypeTagGroups::NUM_APERIODIC = sizeof(EmotiBitPacket::Ty
 const char* const EmotiBitPacket::TypeTagGroups::USER_MESSAGES[] = {EmotiBitPacket::TypeTag::USER_NOTE};
 uint8_t EmotiBitPacket::TypeTagGroups::NUM_USER_MESSAGES = sizeof(EmotiBitPacket::TypeTagGroups::USER_MESSAGES) / sizeof(EmotiBitPacket::TypeTagGroups::USER_MESSAGES[0]);
 //vector<string> EmotiBitPacket::TypeTag::APERIODIC.push_back(EmotiBitPacket::TypeTag::DATA_CLIPPING);
-
+const char* const EmotiBitPacket::TypeTagGroups::COMPOSITE_PAYLOAD[] =
+{
+	EmotiBitPacket::TypeTag::TIMESTAMP_CROSS_TIME,
+	EmotiBitPacket::TypeTag::LSL_MARKER
+};
+uint8_t EmotiBitPacket::TypeTagGroups::NUM_COMPOSITE_PAYLOAD = sizeof(EmotiBitPacket::TypeTagGroups::COMPOSITE_PAYLOAD) / sizeof(EmotiBitPacket::TypeTagGroups::COMPOSITE_PAYLOAD[0]);
 #ifdef ARDUINO
 	const String EmotiBitPacket::TIMESTAMP_STRING_FORMAT = "%Y-%m-%d_%H-%M-%S-%f";
 #else

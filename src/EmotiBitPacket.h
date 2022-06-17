@@ -181,6 +181,7 @@ public:
 		static const char* GPS_SPEED;
 		static const char* GPS_BEARING;
 		static const char* GPS_ALTITUDE;
+		static const char* TIMESTAMP_EMOTIBIT;
 		static const char* TIMESTAMP_LOCAL;
 		static const char* TIMESTAMP_UTC;
 		static const char* TIMESTAMP_CROSS_TIME;
@@ -221,8 +222,10 @@ public:
   public:
 	  static uint8_t NUM_APERIODIC;
 	  static uint8_t NUM_USER_MESSAGES;
+	  static uint8_t NUM_COMPOSITE_PAYLOAD;
       static const char* const APERIODIC[];
       static const char* const USER_MESSAGES[];
+	  static const char* const COMPOSITE_PAYLOAD[];  //!< Array to hold typetags which contain multiple types of information in payload
   };
 
 	class PayloadLabel
@@ -232,6 +235,10 @@ public:
 		static const char* DATA_PORT;
 		static const char* RECORDING_STATUS;
 		static const char* POWER_STATUS;
+		static const char* LSL_MARKER_RX_TIMESTAMP;
+		static const char* LSL_MARKER_SRC_TIMESTAMP;
+		static const char* LSL_LOCAL_CLOCK_TIMESTAMP;
+		static const char* LSL_MARKER_DATA;
 	};
 	
   static const char PACKET_DELIMITER_CSV;
