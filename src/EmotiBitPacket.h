@@ -233,6 +233,7 @@ public:
 	public:
 		static const char* CONTROL_PORT;
 		static const char* DATA_PORT;
+		static const char* DEVICE_ID;
 		static const char* RECORDING_STATUS;
 		static const char* POWER_STATUS;
 		static const char* LSL_MARKER_RX_TIMESTAMP;
