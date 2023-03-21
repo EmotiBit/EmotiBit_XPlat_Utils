@@ -364,7 +364,7 @@ int16_t EmotiBitPacket::getPacketElement(const String& packet, String& element, 
 	return nextStartChar;
 }
 
-int16_t EmotiBitPacket::getPacketKeyedValue(const String &packet, const String &key, String &value, uint16_t startChar)
+int16_t EmotiBitPacket::getPacketKeyedValue(const String &packet, const String &key, String &value, int16_t startChar)
 {
 	String element;
 	do

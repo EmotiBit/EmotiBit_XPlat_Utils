@@ -267,7 +267,7 @@ public:
 	/// @param key to search for in the packet
 	/// @param value is filled with the extracted element
 	/// @return startChar of the value element or -1 if no key/value exists
-	static int16_t getPacketKeyedValue(const String &packet, const String &key, String &value, uint16_t startChar = 0);
+	static int16_t getPacketKeyedValue(const String &packet, const String &key, String &value, int16_t startChar = 0);
 
 #ifndef ARDUINO
 	static bool getHeader(const vector<string>& packet, Header &packetHeader); // Returns false if the packet is malformed
