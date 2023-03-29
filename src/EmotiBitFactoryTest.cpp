@@ -1,14 +1,5 @@
 #include "EmotiBitFactoryTest.h"
 #ifdef ARDUINO
-#include <SPI.h>
-#include <Wire.h>
-#if defined ARDUINO_FEATHER_ESP32
-#include <SD.h>
-#else
-#include <SdFat.h>
-#endif
-#include "EmotiBit_Si7013.h"
-#include "SparkFun_External_EEPROM.h"
 #include "EmotiBitVersionController.h"
 #endif
 // Factory Test Typetags
