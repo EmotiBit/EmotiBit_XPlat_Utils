@@ -1,6 +1,6 @@
 #include "EmotiBitVariants.h"
 #ifdef ARDUINO
-#include "EmotibItVersionController.h"
+#include "EmotiBitVersionController.h"
 #endif
 
 const char* EmotiBitVariants::EMOTIBIT_SKU_MD = "MD\0";
