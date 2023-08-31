@@ -203,6 +203,9 @@ public:
 		static const char* EMOTIBIT_DISCONNECT;
 		static const char* SERIAL_DATA_ON;
 		static const char* SERIAL_DATA_OFF;
+		static const char* WIFI_ADD;
+		static const char* WIFI_DELETE;
+		static const char* EMOTIBIT_RESET;
 		//static const char* KEEP_ALIVE;
 		static const char* ACK;
 		static const char* REQUEST_DATA;

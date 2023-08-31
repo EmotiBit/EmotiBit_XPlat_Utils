@@ -75,6 +75,10 @@ const char* EmotiBitPacket::TypeTag::PONG = "PO\0";
 const char* EmotiBitPacket::TypeTag::HELLO_EMOTIBIT = "HE\0";
 const char* EmotiBitPacket::TypeTag::HELLO_HOST = "HH\0";
 const char* EmotiBitPacket::TypeTag::EMOTIBIT_CONNECT = "EC\0";
+// Sd Card TypeTags
+const char* EmotiBitPacket::TypeTag::WIFI_ADD = "WA\0";
+const char* EmotiBitPacket::TypeTag::WIFI_DELETE = "WD\0";
+const char* EmotiBitPacket::TypeTag::EMOTIBIT_RESET = "ER\0";
 
 const char* EmotiBitPacket::PayloadLabel::CONTROL_PORT = "CP\0";
 const char* EmotiBitPacket::PayloadLabel::DATA_PORT = "DP\0";
