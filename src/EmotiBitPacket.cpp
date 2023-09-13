@@ -39,6 +39,7 @@ const char* EmotiBitPacket::TypeTag::SD_CARD_PERCENT = "SD\0";
 const char* EmotiBitPacket::TypeTag::RESET = "RS\0"; // still necessary?
 const char* EmotiBitPacket::TypeTag::EMOTIBIT_DEBUG = "DB\0";
 const char* EmotiBitPacket::TypeTag::ACK = "AK\0";
+const char* EmotiBitPacket::TypeTag::NACK = "NK\0";
 const char* EmotiBitPacket::TypeTag::REQUEST_DATA = "RD\0";
 const char* EmotiBitPacket::TypeTag::TIMESTAMP_EMOTIBIT = "TE\0";
 const char* EmotiBitPacket::TypeTag::TIMESTAMP_LOCAL = "TL\0";

@@ -138,6 +138,7 @@ public:
 		HELLO_EMOTIBIT,	// Hello Emotibit (used to establish communications)
 		// General Comms
 		ACK,
+		NACK,
 		REQUEST_DATA,	// Request data, data = list of requested data types
 		PING,	// Ping
 		PONG,	// Pong
@@ -208,6 +209,7 @@ public:
 		static const char* EMOTIBIT_RESET;
 		//static const char* KEEP_ALIVE;
 		static const char* ACK;
+		static const char* NACK;
 		static const char* REQUEST_DATA;
 		static const char* PING;
 		static const char* PONG;
