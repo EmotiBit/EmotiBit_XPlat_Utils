@@ -36,7 +36,7 @@ const char* EmotiBitPacket::TypeTag::BUTTON_PRESS_LONG = "BL\0";
 const char* EmotiBitPacket::TypeTag::DATA_CLIPPING = "DC\0";
 const char* EmotiBitPacket::TypeTag::DATA_OVERFLOW = "DO\0";
 const char* EmotiBitPacket::TypeTag::SD_CARD_PERCENT = "SD\0";
-const char* EmotiBitPacket::TypeTag::RESET = "RS\0"; // still necessary?
+const char* EmotiBitPacket::TypeTag::RESET = "RS\0";
 const char* EmotiBitPacket::TypeTag::EMOTIBIT_DEBUG = "DB\0";
 const char* EmotiBitPacket::TypeTag::ACK = "AK\0";
 const char* EmotiBitPacket::TypeTag::NACK = "NK\0";
@@ -79,7 +79,6 @@ const char* EmotiBitPacket::TypeTag::EMOTIBIT_CONNECT = "EC\0";
 // Sd Card TypeTags
 const char* EmotiBitPacket::TypeTag::WIFI_ADD = "WA\0";
 const char* EmotiBitPacket::TypeTag::WIFI_DELETE = "WD\0";
-const char* EmotiBitPacket::TypeTag::EMOTIBIT_RESET = "ER\0";
 
 const char* EmotiBitPacket::PayloadLabel::CONTROL_PORT = "CP\0";
 const char* EmotiBitPacket::PayloadLabel::DATA_PORT = "DP\0";
