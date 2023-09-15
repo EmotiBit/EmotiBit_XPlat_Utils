@@ -206,6 +206,7 @@ public:
 		static const char* SERIAL_DATA_OFF;
 		static const char* WIFI_ADD;
 		static const char* WIFI_DELETE;
+		static const char* LIST;
 		//static const char* KEEP_ALIVE;
 		static const char* ACK;
 		static const char* NACK;
