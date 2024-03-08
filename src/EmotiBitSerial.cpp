@@ -11,8 +11,9 @@ bool EmotiBitSerial::parseSerialMessage(String message, String &typetag, String 
 		{
 			typetag = message.substring(1, payloadDelimiterIndex);
 			payload = message.substring(payloadDelimiterIndex + 1, messageDelimiterIndex);
-			Serial.print("typetag: ");Serial.println(typetag);
-			Serial.print("payload: ");Serial.println(payload);
+			// ToDo: Add a debug pre-processor guard instead of comments
+			//Serial.print("typetag: ");Serial.println(typetag);
+			//Serial.print("payload: ");Serial.println(payload);
 		}
 		else
 		{
