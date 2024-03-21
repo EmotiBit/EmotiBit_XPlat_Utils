@@ -20,6 +20,7 @@ public:
     */
     struct Inputs
     {
+        static const char ADC_CORRECTION_MODE = 'A';  ///< enter ADC correction mode. Backward compatibility to emotibit v2/v3 
         static const char RESET = 'R';  ///< resets MCU
         static const char CONFIG_UPDATE = 'C';  ///< Enters config file update mode.
         static const char DEBUG_MODE = 'D';   ///< Enters Debug mode
