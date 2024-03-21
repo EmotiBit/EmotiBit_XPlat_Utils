@@ -25,7 +25,7 @@ bool EmotiBitSerial::parseSerialMessage(String message, String &typetag, String 
 					// msg of the type @TT,~
 					return false;
 				}
-				else if (payloadDelimiterIndex == messageDelimiterIndex - 2)
+				else if (payloadDelimiterIndex == messageDelimiterIndex - 2 && isSpace(message.charAt(payloadDelimiterIndex+1)))
 				{
 					// msg of the type @TT, ~
 					return false;
