@@ -5,15 +5,39 @@ bool EmotiBitSerial::parseSerialMessage(String message, String &typetag, String 
 {
 	if(message.charAt(0) == MSG_START_CHAR)
 	{
-		int payloadDelimiterIndex = message.indexOf(PAYLOAD_DELIMITER);
+		// msg has valid start condition
 		int messageDelimiterIndex = message.indexOf(MSG_TERM_CHAR);
-		if (payloadDelimiterIndex > 0 && messageDelimiterIndex > 0)
+		if(messageDelimiterIndex > 0)
 		{
-			typetag = message.substring(1, payloadDelimiterIndex);
-			payload = message.substring(payloadDelimiterIndex + 1, messageDelimiterIndex);
-			// ToDo: Add a debug pre-processor guard instead of comments
-			//Serial.print("typetag: ");Serial.println(typetag);
-			//Serial.print("payload: ");Serial.println(payload);
+			// valid msg
+			int payloadDelimiterIndex = message.indexOf(PAYLOAD_DELIMITER);
+			if (payloadDelimiterIndex < 0 )
+			{
+				// No payload
+				// msg of the type @TT~
+				typetag = message.substring(1, messageDelimiterIndex);
+				payload = "";
+			}
+			else
+			{
+				if (payloadDelimiterIndex == messageDelimiterIndex - 1)
+				{
+					// msg of the type @TT,~
+					return false;
+				}
+				else if (payloadDelimiterIndex == messageDelimiterIndex - 2)
+				{
+					// msg of the type @TT, ~
+					return false;
+				}
+				else
+				{
+					// msg of the type @TT,payload~
+					typetag = message.substring(1, payloadDelimiterIndex);
+					payload = message.substring(payloadDelimiterIndex + 1, messageDelimiterIndex);
+
+				}
+			}
 		}
 		else
 		{
@@ -24,12 +48,21 @@ bool EmotiBitSerial::parseSerialMessage(String message, String &typetag, String 
 	{
 		return false;
 	}
+	// ToDo: Add a debug pre-processor guard instead of comments
+	//Serial.print("typetag: ");Serial.println(typetag);
+	//Serial.print("payload: ");Serial.println(payload);
 	return true;
 }
 
 void EmotiBitSerial::sendMessage(String typeTag, String payload)
 {
-    String msg = MSG_START_CHAR + typeTag + PAYLOAD_DELIMITER + payload + MSG_TERM_CHAR;
-    Serial.println(msg);
+    Serial.print(EmotiBitSerial::MSG_START_CHAR);
+	Serial.print(typeTag);
+	if (!payload.equals(""))
+	{
+		Serial.print(EmotiBitSerial::PAYLOAD_DELIMITER);
+		Serial.print(payload);
+	}
+	Serial.println(EmotiBitSerial::MSG_TERM_CHAR);
 }
 #endif

@@ -57,20 +57,13 @@ void EmotiBitFactoryTest::updateOutputString(String &output, const char* testTyp
 	}
 	else
 	{
-		output += MSG_TERM_CHAR;
+		output += EmotiBitSerial::MSG_TERM_CHAR;
 	}
 }
 
 void EmotiBitFactoryTest::sendMessage(String typeTag, String payload)
 {
-	Serial.print(EmotiBitFactoryTest::MSG_START_CHAR);
-	Serial.print(typeTag);
-	if (!payload.equals(""))
-	{
-		Serial.print(EmotiBitFactoryTest::PAYLOAD_DELIMITER);
-		Serial.print(payload);
-	}
-	Serial.println(EmotiBitFactoryTest::MSG_TERM_CHAR);
+	EmotiBitSerial::sendMessage(typeTag, payload);
 }
 
 	// Parses the barcode 
@@ -120,13 +113,13 @@ void EmotiBitFactoryTest::convertBarcodeToVariantInfo(Barcode barcode, EmotiBitV
 string EmotiBitFactoryTest::createPacket(string typeTag, string payload)
 {
 	string s = "";
-	s += EmotiBitFactoryTest::MSG_START_CHAR;
+	s += EmotiBitSerial::MSG_START_CHAR;
 	s += typeTag;
 	if (payload.length() > 0) {
-		s += EmotiBitFactoryTest::PAYLOAD_DELIMITER;
+		s += EmotiBitSerial::PAYLOAD_DELIMITER;
 		s += payload;
 	}
-	s += EmotiBitFactoryTest::MSG_TERM_CHAR;
+	s += EmotiBitSerial::MSG_TERM_CHAR;
 	return s;
 }
 #endif
