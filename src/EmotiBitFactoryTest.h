@@ -7,7 +7,7 @@
 	#include "ofMain.h"
 #endif // !ARDUINO
 #include "EmotiBitVariants.h"
-
+#include "EmotiBitSerial.h"
 
 #ifdef ARDUINO
 struct Barcode
@@ -70,11 +70,9 @@ public:
 		static const char* EMOTIBIT_STORAGE;
 	};
 
-	static const char MSG_START_CHAR = '@';
-	static const char MSG_TERM_CHAR = '~';
-	static const char PAYLOAD_DELIMITER = ',';
+	// definitions that can exist outside the scope of factory test are defined in EmotiBitSerial. 
 	static const char BARCODE_DELIMITER = '-';
-	static const char INIT_FACTORY_TEST = 'F';
+	static const char INIT_FACTORY_TEST = EmotiBitSerial::Inputs::FACTORY_TEST_MODE;//'F';
 	static const char FIRMWARE_DELIMITER = '.';
 	#ifdef ARDUINO
 	static void updateOutputString(String &output, const char* testType, const char* result);
