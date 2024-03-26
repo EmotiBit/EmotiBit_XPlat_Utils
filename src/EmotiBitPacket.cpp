@@ -399,6 +399,15 @@ String EmotiBitPacket::createPacket(const String &typeTag, const uint16_t &packe
 	return EmotiBitPacket::headerToString(header) + EmotiBitPacket::PAYLOAD_DELIMITER + data + EmotiBitPacket::PACKET_DELIMITER_CSV;
 }
 #else
+
+//template <class T>
+//void EmotiBitPacket::addToPayload(const T &element, std::stringstream &payload, uint16_t &payloadLen)
+//{
+//	payload << element << EmotiBitPacket::PAYLOAD_DELIMITER;
+//	payloadLen++;
+//}
+//void EmotiBitPacket::addToPayload(const char* element, std::stringstream &payload, uint16_t &payloadLen)
+
 int16_t EmotiBitPacket::getPacketElement(const string &packet, string &element, uint16_t startChar)
 {
 	// ToDo: try out a more passthrough approach to overloading
@@ -456,4 +465,5 @@ string EmotiBitPacket::createPacket(const string &typeTag, const uint16_t &packe
 	packet += EmotiBitPacket::PACKET_DELIMITER_CSV;
 	return packet;
 }
+
 #endif
