@@ -286,9 +286,20 @@ public:
 #ifdef ARDUINO
 	static String createPacket(const String &typeTag, const uint16_t &packetNumber, const String &data, const uint16_t &dataLength, const uint8_t &protocolVersion = 1, const uint8_t &dataReliability = 100);
 #else
+  //! @brief Adds an element to the passed payload reference
+	//! @param element EmotiBit TypeTag or PayloadLabel to add to the payload
+	//! @param payload stringstream referemce to add payload to
+	//! @param payloadLen reference to increment payload size
+	template<typename T>
+	static void addToPayload(const T &element, std::stringstream &payload, uint16_t &payloadLen) {
+		payload << element << EmotiBitPacket::PAYLOAD_DELIMITER;
+		payloadLen++;
+	}
+	//static void addToPayload(const char* element, std::stringstream &payload, uint16_t &payloadLen);
+
 	static string createPacket(const string &typeTag, const uint16_t &packetNumber, const string &data, const uint16_t &dataLength, const uint8_t &protocolVersion = 1, const uint8_t &dataReliability = 100);
 	static string createPacket(const string &typeTag, const uint16_t &packetNumber, const vector<string> &data, const uint8_t &protocolVersion = 1, const uint8_t &dataReliability = 100);
-	
+  
 #endif
 private:
 	
