@@ -17,7 +17,7 @@
 
 class EmotiBitPacket {
 public:
-
+	static const uint32_t maxTestLength;
 	// Platform independent fields
 	// ToDo: Needs some refactoring for direct binary transmision
 	class Header {
@@ -299,8 +299,32 @@ public:
 
 	static string createPacket(const string &typeTag, const uint16_t &packetNumber, const string &data, const uint16_t &dataLength, const uint8_t &protocolVersion = 1, const uint8_t &dataReliability = 100);
 	static string createPacket(const string &typeTag, const uint16_t &packetNumber, const vector<string> &data, const uint8_t &protocolVersion = 1, const uint8_t &dataReliability = 100);
-  
-#endif
+	#endif
+
+
+	//! @brief Appends a test data message to the passed dataMessage reference for Arduino platforms
+	//! @param dataMessage reference to the String to append the test data message to
+	//! @param packetNumber reference to the packet number to increment
+	//! @param typeTags array of type tags to use in the test data message
+	//! @param dataClipping clipping value for the test data message
+	//! @param dataLength length of the data to be appended
+	//! @param isRecording flag to determine if the test data message should be appended
+	//! @note tests will start when isRecording is true, and with the current implementation, the test will end at the end of the test length
+	static String appendTestDataMessage(String &dataMessage, uint16_t &packetNumber, const char *const *typeTags, uint8_t dataClipping, uint8_t dataLength);
+
+	//! @brief Creates a test sawtooth data message for Arduino platforms
+	//! @param dataMessage reference to the String to append the test sawtooth data to
+	//! @param packetNumber reference to the packet number to increment
+	//! @param typeTags array of type tags to use in the test sawtooth data message
+	//! @param dataClipping clipping value for the test sawtooth data message
+	//! @param dataLength length of the data to be appended
+	//! @param state future use when specifying packet length, currently unused
+	static String createTestSawtoothData(String &dataMessage, uint16_t &packetNumber, const char *const *typeTags, uint8_t dataClipping, uint8_t dataLength, uint8_t state);
+
+	//! @brief Tests the conversion of headers to a String for Arduino platforms
+	//! @return String representation of the test header
+	//! @note This function is used to verify the header conversion functionality after removing the OF dependency
+	static String testHeaderToString();
 private:
 	
 };
