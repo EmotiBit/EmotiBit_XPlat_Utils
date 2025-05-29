@@ -2,7 +2,7 @@
 
 #ifdef ARDUINO
 	#include <Arduino.h>
-#elif OF_VERSION_MAJOR
+#elif OF_MAIN_H
 	#include "ofMain.h"
 #else
 	// ToDo: Remove OF dependency for ofToString()
@@ -330,7 +330,7 @@ String EmotiBitPacket::headerToString(const Header &header)
 	headerString += header.protocolVersion;
 	headerString += EmotiBitPacket::PAYLOAD_DELIMITER;
 	headerString += header.dataReliability;
-#elif OF_VERSION_MAJOR //TODO REMOVE
+#elif OF_MAIN_H //TODO REMOVE
 string EmotiBitPacket::headerToString(const Header &header)
 {
 	string headerString;
@@ -463,7 +463,7 @@ int16_t EmotiBitPacket::getPacketKeyedValue(const vector<string> &splitPacket, c
 string EmotiBitPacket::createPacket(const string &typeTag, const uint16_t &packetNumber, const string &data, const uint16_t &dataLength, const uint8_t& protocolVersion, const uint8_t& dataReliability)
 {
 
-	#ifdef OF_VERSION_MAJOR
+	#ifdef OF_MAIN_H
 	// ToDo: Generalize createPacket to work across more platforms inside EmotiBitPacket
 	EmotiBitPacket::Header header = EmotiBitPacket::createHeader(typeTag, ofGetElapsedTimeMillis(), packetNumber, dataLength, protocolVersion, dataReliability);
 	#else
@@ -486,7 +486,7 @@ string EmotiBitPacket::createPacket(const string &typeTag, const uint16_t &packe
 {
 	// ToDo: Template data vector
 	// ToDo: Generalize createPacket to work across more platforms inside EmotiBitPacket
-	#ifdef OF_VERSION_MAJOR
+	#ifdef OF_MAIN_H
 	EmotiBitPacket::Header header = EmotiBitPacket::createHeader(typeTag, ofGetElapsedTimeMillis(), packetNumber, data.size(), protocolVersion, dataReliability);
 	#else 
 	int32_t time = 0;
@@ -502,6 +502,7 @@ string EmotiBitPacket::createPacket(const string &typeTag, const uint16_t &packe
 	return packet;
 }
 #endif
+
 String EmotiBitPacket::appendTestDataMessage(String &dataMessage, uint16_t &packetNumber, const char *const *typeTags, uint8_t dataClipping, uint8_t dataLength) {
     uint8_t state = 0;
     static bool firstMessage = 1;
@@ -513,22 +514,16 @@ String EmotiBitPacket::appendTestDataMessage(String &dataMessage, uint16_t &pack
         String beginHeader = EmotiBitPacket::headerToString(
             EmotiBitPacket::createHeader("Begin Recording", EmotiBitPacket::maxTestLength, 0, 0, 0, 0)
         );
-#ifdef ARDUINO
         dataMessage = beginHeader + EmotiBitPacket::PACKET_DELIMITER_CSV;
-#else
-        dataMessage = beginHeader.str + EmotiBitPacket::PACKET_DELIMITER_CSV;
-#endif
+
         return dataMessage;
     }
 
     if (testCount <= EmotiBitPacket::maxTestLength) {
         String header = EmotiBitPacket::testHeaderToString();
         String data = EmotiBitPacket::createTestSawtoothData(dataMessage, packetNumber, typeTags, dataClipping, dataLength, 0);
-#ifdef ARDUINO
         dataMessage = header + EmotiBitPacket::PAYLOAD_DELIMITER + data + EmotiBitPacket::PACKET_DELIMITER_CSV;
-#else
-        dataMessage.str = header.str + EmotiBitPacket::PAYLOAD_DELIMITER + data.str + EmotiBitPacket::PACKET_DELIMITER_CSV;
-#endif
+
         packetNumber++;
         testCount++;
         return dataMessage;
@@ -539,24 +534,14 @@ String EmotiBitPacket::appendTestDataMessage(String &dataMessage, uint16_t &pack
 
 String EmotiBitPacket::createTestSawtoothData(String &dataMessage, uint16_t &packetNumber, const char *const *typeTags, uint8_t dataClipping, uint8_t dataLength, uint8_t state) {
     String payload;
-#ifdef ARDUINO
-    payload = "";
-#else
-    payload.str = "";
-#endif
+
     int numValues = 10; // Number of values to generate
     int minVal = 0; // Minimum value
     int maxVal = 100; // Maximum value
-    for (uint8_t i = 0; i < numValues; ++i) {
-#ifdef ARDUINO
+	for (uint8_t i = 0; i < numValues; ++i) {
         if (i > 0) payload += EmotiBitPacket::PAYLOAD_DELIMITER;
         int value = minVal + ((maxVal - minVal) * i) / (numValues - 1);
         payload += value;
-#else
-        if (i > 0) payload.str += EmotiBitPacket::PAYLOAD_DELIMITER;
-        int value = minVal + ((maxVal - minVal) * i) / (numValues - 1);
-        payload.str += std::to_string(value);
-#endif
     }
     return payload;
 }
@@ -564,7 +549,7 @@ String EmotiBitPacket::createTestSawtoothData(String &dataMessage, uint16_t &pac
 String EmotiBitPacket::testHeaderToString() {
 	static uint32_t timestamp = 0;
     static uint16_t packetNumber = 0;
-    static uint16_t dataLength = 1;
+    static uint16_t dataLength = 1; //stays at one to prevent breaking the oscilliscope
     static uint8_t protocolVersion = 0;
     static uint8_t dataReliability = 0;
 

@@ -40,7 +40,7 @@ int main() {
     String dataMessage;
     uint16_t packetNumber = 0;
 
-    // Define the type tags for the test data, only EDA is being used
+    // Define the type tags for the test data, can be used to expand the test data in the future
     const char* typeTags[] = {
         EmotiBitPacket::TypeTag::PPG_INFRARED,
         EmotiBitPacket::TypeTag::PPG_RED,

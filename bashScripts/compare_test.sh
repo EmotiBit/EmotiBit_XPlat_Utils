@@ -4,7 +4,7 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 TEST_FILE="$PROJECT_ROOT/build/Release/test.csv"
-EMOTIBIT_DIR="/e"  # E drive mount point (adjust if needed for your system)
+EMOTIBIT_DIR="/d"  # drive mount point, edit as needed
 
 # Function to extract date from filename
 extract_date_from_filename() {
@@ -57,56 +57,6 @@ find_most_recent_csv() {
     echo "$most_recent_file"
 }
 
-# Function to generate test file if it doesn't exist
-generate_test_file() {
-    echo "Test file not found. Generating it using EmotiBitDataTester..."
-    
-    # Check if we're in the right directory structure
-    if [[ ! -f "$PROJECT_ROOT/src/EmotiBitDataTester.cpp" ]]; then
-        echo "Error: EmotiBitDataTester.cpp not found at $PROJECT_ROOT/src/EmotiBitDataTester.cpp"
-        echo "Make sure you're running this script from the correct location."
-        return 1
-    fi
-    
-    # Build and run the data tester
-    cd "$PROJECT_ROOT"
-    
-    # Try to build with different methods
-    if command -v cmake >/dev/null 2>&1 && [[ -f "CMakeLists.txt" ]]; then
-        echo "Building with CMake..."
-        mkdir -p build
-        cd build
-        cmake .. && make EmotiBitDataTester
-        if [[ -f "./EmotiBitDataTester" ]]; then
-            ./EmotiBitDataTester
-        else
-            echo "Error: Failed to build EmotiBitDataTester with CMake"
-            return 1
-        fi
-    elif command -v g++ >/dev/null 2>&1; then
-        echo "Building with g++..."
-        g++ -std=c++11 -I src src/EmotiBitDataTester.cpp src/EmotiBitPacket.cpp -o EmotiBitDataTester
-        if [[ -f "./EmotiBitDataTester" ]]; then
-            ./EmotiBitDataTester
-        else
-            echo "Error: Failed to build EmotiBitDataTester with g++"
-            return 1
-        fi
-    else
-        echo "Error: No suitable compiler found (cmake/make or g++)"
-        return 1
-    fi
-    
-    # Check if test.csv was generated
-    if [[ -f "$TEST_FILE" ]]; then
-        echo "✅ Test file generated successfully!"
-        return 0
-    else
-        echo "❌ Failed to generate test file"
-        return 1
-    fi
-}
-
 # Main script
 main() {
     echo "=== EmotiBit CSV Test Data Comparison Script ==="
@@ -114,31 +64,11 @@ main() {
     echo "Project root: $PROJECT_ROOT"
     echo
     
-    # Check if test file exists, if not try to generate it
-    if [[ ! -f "$TEST_FILE" ]]; then
-        echo "Test file not found at $TEST_FILE"
-        read -p "Would you like to generate it? (y/n): " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            if ! generate_test_file; then
-                exit 1
-            fi
-        else
-            echo "Error: Test file is required for comparison"
-            exit 1
-        fi
-    fi
-    
+ 
     # Check if E drive is accessible
     if [[ ! -d "$EMOTIBIT_DIR" ]]; then
         echo "Error: E drive not accessible at $EMOTIBIT_DIR"
-        echo "Make sure the EmotiBit SD card is mounted"
-        echo
-        echo "Common mount points to try:"
-        echo "  Windows Git Bash: /e"
-        echo "  WSL: /mnt/e"
-        echo "  Linux: /media/*/EMOTIBIT or /mnt/emotibit"
-        echo
+        echo "Enter /mount point for EmotiBit SD card (e.g., /e):"
         read -p "Enter alternative path to EmotiBit SD card (or press Enter to exit): " alt_path
         if [[ -n "$alt_path" && -d "$alt_path" ]]; then
             EMOTIBIT_DIR="$alt_path"
@@ -160,21 +90,15 @@ main() {
     echo
     echo "Most recent CSV file: $(basename "$MOST_RECENT_CSV")"
     echo "Full path: $MOST_RECENT_CSV"
-    if [[ -n "$INFO_FILE" ]]; then
-        echo "Corresponding info file: $(basename "$INFO_FILE")"
-    else
-        echo "⚠️  No corresponding info file found"
-    fi
     echo "Test file: $(basename "$TEST_FILE")"
     echo
     
-    # Extract first few lines from each file for preview
     echo "=== TEST FILE ==="
-    head -5 "$TEST_FILE" 2>/dev/null || echo "Error reading test file"
-    
+    cat "$TEST_FILE" 2>/dev/null || echo "Error reading test file"
+
     echo
     echo "=== MOST RECENT CSV ==="
-    head -5 "$MOST_RECENT_CSV" 2>/dev/null || echo "Error reading CSV file"
+    cat "$MOST_RECENT_CSV" 2>/dev/null || echo "Error reading CSV file"
     
     if [[ -n "$INFO_FILE" ]]; then
         echo
@@ -191,9 +115,9 @@ main() {
     
     # Compare the entire files line by line
     if diff -q "$TEST_FILE" "$MOST_RECENT_CSV" >/dev/null 2>&1; then
-        echo "✅ Files MATCH completely!"
+        echo "Files MATCH"
     else
-        echo "❌ Files DIFFER!"
+        echo "Files DIFFER"
         echo
         echo "=== FILE STATISTICS ==="
         TEST_LINES=$(wc -l < "$TEST_FILE")
@@ -215,7 +139,7 @@ main() {
         echo "Showing first 10 differences..."
         
         # Compare line by line and show differences
-        diff --side-by-side --left-column "$TEST_FILE" "$MOST_RECENT_CSV" | head -10
+        diff --side-by-side --left-column "$TEST_FILE" "$MOST_RECENT_CSV"
         
         echo
         echo "=== DETAILED ANALYSIS ==="
@@ -227,9 +151,9 @@ main() {
         head -1 "$MOST_RECENT_CSV" > "$TEMP_CSV"
         
         if diff -q "$TEMP_TEST" "$TEMP_CSV" >/dev/null 2>&1; then
-            echo "✅ Header format matches"
+            echo "Header format matches"
         else
-            echo "❌ Header format differs"
+            echo "Header format differs"
             echo "Expected: $(cat "$TEMP_TEST")"
             echo "Actual:   $(cat "$TEMP_CSV")"
         fi
@@ -237,7 +161,7 @@ main() {
         # Show which lines differ
         echo
         echo "Lines that differ:"
-        diff --unchanged-line-format="" --old-line-format="Expected line %dn: %L" --new-line-format="Actual line   %dn: %L" "$TEST_FILE" "$MOST_RECENT_CSV" | head -20
+        diff --unchanged-line-format="" --old-line-format="Expected line %dn: %L" --new-line-format="Actual line   %dn: %L" "$TEST_FILE" "$MOST_RECENT_CSV" 
         
         # Cleanup
         rm -f "$TEMP_TEST" "$TEMP_CSV"

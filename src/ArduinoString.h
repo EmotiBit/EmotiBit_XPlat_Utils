@@ -48,7 +48,14 @@ namespace EmotiBit
 		String operator+(const char* s) const {
 			return String(str + (s ? s : ""));
 		}
-
+		String& operator+=(char c) {
+			str += c;
+			return *this;
+		}
+		String operator+(char c) const {
+			return String(str + c);
+		}
+		
 		size_t indexOf(char val, size_t from) const
 		{
 			return str.find_first_of(val, from);
