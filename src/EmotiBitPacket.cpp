@@ -467,7 +467,8 @@ string EmotiBitPacket::createPacket(const string &typeTag, const uint16_t &packe
 	// ToDo: Generalize createPacket to work across more platforms inside EmotiBitPacket
 	EmotiBitPacket::Header header = EmotiBitPacket::createHeader(typeTag, ofGetElapsedTimeMillis(), packetNumber, dataLength, protocolVersion, dataReliability);
 	#else
-	int32_t time = 0;
+	//ToDo: Connect time to a time source, this was added in the refactor away from ofGetElapsedTimeMillis() for non-OF platforms
+	static int32_t time = 0;
 	EmotiBitPacket::Header header = EmotiBitPacket::createHeader(typeTag, time++, packetNumber, dataLength, protocolVersion, dataReliability);
 
 	#endif
@@ -489,7 +490,7 @@ string EmotiBitPacket::createPacket(const string &typeTag, const uint16_t &packe
 	#ifdef OF_MAIN_H
 	EmotiBitPacket::Header header = EmotiBitPacket::createHeader(typeTag, ofGetElapsedTimeMillis(), packetNumber, data.size(), protocolVersion, dataReliability);
 	#else 
-	int32_t time = 0;
+	static int32_t time = 0;
 	EmotiBitPacket::Header header = EmotiBitPacket::createHeader(typeTag, time++, packetNumber, data.size(), protocolVersion, dataReliability);
 	#endif
 
@@ -504,6 +505,7 @@ string EmotiBitPacket::createPacket(const string &typeTag, const uint16_t &packe
 #endif
 
 String EmotiBitPacket::appendTestDataMessage(String &dataMessage, uint16_t &packetNumber, const char *const *typeTags, uint8_t dataClipping, uint8_t dataLength) {
+	//ToDo: Edit function to be more modular in the future so we can add more test data messages
     uint8_t state = 0;
     static bool firstMessage = 1;
     static int testCount = 0;

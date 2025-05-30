@@ -309,6 +309,7 @@ public:
 	//! @param dataClipping clipping value for the test data message
 	//! @param dataLength length of the data to be appended
 	//! @param isRecording flag to determine if the test data message should be appended
+	//! @return String representation of the test data message
 	//! @note tests will start when isRecording is true, and with the current implementation, the test will end at the end of the test length
 	static String appendTestDataMessage(String &dataMessage, uint16_t &packetNumber, const char *const *typeTags, uint8_t dataClipping, uint8_t dataLength);
 
@@ -319,6 +320,7 @@ public:
 	//! @param dataClipping clipping value for the test sawtooth data message
 	//! @param dataLength length of the data to be appended
 	//! @param state future use when specifying packet length, currently unused
+	//! @return String representation of the test sawtooth data message
 	static String createTestSawtoothData(String &dataMessage, uint16_t &packetNumber, const char *const *typeTags, uint8_t dataClipping, uint8_t dataLength, uint8_t state);
 
 	//! @brief Tests the conversion of headers to a String for Arduino platforms

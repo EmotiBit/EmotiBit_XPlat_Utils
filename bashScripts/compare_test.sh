@@ -100,12 +100,6 @@ main() {
     echo "=== MOST RECENT CSV ==="
     cat "$MOST_RECENT_CSV" 2>/dev/null || echo "Error reading CSV file"
     
-    if [[ -n "$INFO_FILE" ]]; then
-        echo
-        echo "=== INFO FILE (first 5 lines) ==="
-        head -5 "$INFO_FILE" 2>/dev/null || echo "Error reading info file"
-    fi
-    
     echo
     echo "=== TEST DATA COMPARISON ==="
     
@@ -127,10 +121,10 @@ main() {
         echo
         
         if [[ $CSV_LINES -lt $TEST_LINES ]]; then
-            echo "⚠️  EmotiBit CSV has fewer lines than expected"
+            echo "EmotiBit CSV has fewer lines than expected"
             echo "   Missing $(($TEST_LINES - $CSV_LINES)) lines"
         elif [[ $CSV_LINES -gt $TEST_LINES ]]; then
-            echo "⚠️  EmotiBit CSV has more lines than expected"
+            echo "EmotiBit CSV has more lines than expected"
             echo "   Extra $(($CSV_LINES - $TEST_LINES)) lines"
         fi
         echo
