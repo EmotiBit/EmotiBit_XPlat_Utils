@@ -5,8 +5,7 @@
 #elif OF_MAIN_H
 	#include "ofMain.h"
 #else
-	// ToDo: Remove OF dependency for ofToString()
-	//#include "ofMain.h"
+
 #endif // !ARDUINO
 
 
@@ -330,22 +329,6 @@ String EmotiBitPacket::headerToString(const Header &header)
 	headerString += header.protocolVersion;
 	headerString += EmotiBitPacket::PAYLOAD_DELIMITER;
 	headerString += header.dataReliability;
-#elif OF_MAIN_H //TODO REMOVE
-string EmotiBitPacket::headerToString(const Header &header)
-{
-	string headerString;
-	headerString = "";
-	headerString += ofToString(header.timestamp);
-	headerString += EmotiBitPacket::PAYLOAD_DELIMITER;
-	headerString += ofToString(header.packetNumber);
-	headerString += EmotiBitPacket::PAYLOAD_DELIMITER;
-	headerString += ofToString(header.dataLength);
-	headerString += EmotiBitPacket::PAYLOAD_DELIMITER;
-	headerString += ofToString(header.typeTag);
-	headerString += EmotiBitPacket::PAYLOAD_DELIMITER;
-	headerString += ofToString((int)header.protocolVersion);
-	headerString += EmotiBitPacket::PAYLOAD_DELIMITER;
-	headerString += ofToString((int)header.dataReliability);
 #else
 string EmotiBitPacket::headerToString(const Header &header)
 {
@@ -504,10 +487,9 @@ string EmotiBitPacket::createPacket(const string &typeTag, const uint16_t &packe
 }
 #endif
 
-String EmotiBitPacket::appendTestDataMessage(String &dataMessage, uint16_t &packetNumber, const char *const *typeTags, uint8_t dataClipping, uint8_t dataLength) {
+void EmotiBitPacket::appendTestDataMessage(String &dataMessage) {
 	//ToDo: Edit function to be more modular in the future so we can add more test data messages
-    uint8_t state = 0;
-    static bool firstMessage = 1;
+    static bool firstMessage = true;
     static int testCount = 0;
     dataMessage = "";
 
@@ -518,23 +500,22 @@ String EmotiBitPacket::appendTestDataMessage(String &dataMessage, uint16_t &pack
         );
         dataMessage = beginHeader + EmotiBitPacket::PACKET_DELIMITER_CSV;
 
-        return dataMessage;
+        //return dataMessage;
     }
 
-    if (testCount <= EmotiBitPacket::maxTestLength) {
-        String header = EmotiBitPacket::testHeaderToString();
-        String data = EmotiBitPacket::createTestSawtoothData(dataMessage, packetNumber, typeTags, dataClipping, dataLength, 0);
+    else if (testCount <= EmotiBitPacket::maxTestLength) {
+        int dataLength = 0;
+        String data = EmotiBitPacket::createTestSawtoothData(dataLength);
+        String header = EmotiBitPacket::createTestHeader(dataLength);
         dataMessage = header + EmotiBitPacket::PAYLOAD_DELIMITER + data + EmotiBitPacket::PACKET_DELIMITER_CSV;
-
-        packetNumber++;
         testCount++;
-        return dataMessage;
+        //return dataMessage;
     }
 
-    return "";
+    //return "";
 }
 
-String EmotiBitPacket::createTestSawtoothData(String &dataMessage, uint16_t &packetNumber, const char *const *typeTags, uint8_t dataClipping, uint8_t dataLength, uint8_t state) {
+String EmotiBitPacket::createTestSawtoothData(int& outLength) {
     String payload;
 
     int numValues = 10; // Number of values to generate
@@ -545,13 +526,13 @@ String EmotiBitPacket::createTestSawtoothData(String &dataMessage, uint16_t &pac
         int value = minVal + ((maxVal - minVal) * i) / (numValues - 1);
         payload += value;
     }
+	outLength = numValues;
     return payload;
 }
 
-String EmotiBitPacket::testHeaderToString() {
+String EmotiBitPacket::createTestHeader(uint16_t dataLength) {
 	static uint32_t timestamp = 0;
     static uint16_t packetNumber = 0;
-    static uint16_t dataLength = 1; //stays at one to prevent breaking the oscilliscope
     static uint8_t protocolVersion = 0;
     static uint8_t dataReliability = 0;
 

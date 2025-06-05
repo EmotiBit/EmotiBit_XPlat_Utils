@@ -61,8 +61,7 @@ int main() {
         EmotiBitPacket::TypeTag::MAGNETOMETER_Z
     };
     uint8_t clipping = 0;
-    uint8_t length = sizeof(typeTags) / sizeof(typeTags[0]);
-    int x = 0;
+    uint32_t x = 0;
 
     std::ofstream testfile("test.csv", std::ios::binary);
     if (!testfile.is_open()) {
@@ -71,9 +70,8 @@ int main() {
     }
 
     while (x <= EmotiBitPacket::maxTestLength + 1) {
-        String outString = EmotiBitPacket::appendTestDataMessage(dataMessage, packetNumber, typeTags, clipping, length);
-        
-        testfile << outString.str;  // Convert to C string for file output
+        EmotiBitPacket::appendTestDataMessage(dataMessage);
+        testfile << dataMessage.str;
         x++;
     }
 

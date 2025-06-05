@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 using namespace std;
-// ToDo: Add functionality to convert string to Arduino String
 namespace EmotiBit
 {
 	class String
@@ -19,7 +18,7 @@ namespace EmotiBit
 		{
 			str = s;
 		}
-		//added concatenation constructors
+
 		String& operator=(const String& s) {
 			str = s.str;
 			return *this;
@@ -29,33 +28,46 @@ namespace EmotiBit
 			str = s;
 			return *this;
 		}
-
-		String& operator+=(const String& s) {
+		
+		String& operator+=(const String& s)
+		{
 			str += s.str;
 			return *this;
 		}
-		String& operator+=(const string& s) {
+
+		String& operator+=(const string& s)
+		{
 			str += s;
 			return *this;
 		}
 
-		String operator+(const String& s) const {
+		String operator+(const String& s) const
+		{
 			return String(str + s.str);
 		}
-		String operator+(const string& s) const {
+
+		String operator+(const string& s) const
+		{
 			return String(str + s);
 		}
-		String operator+(const char* s) const {
-			return String(str + (s ? s : ""));
-		}
-		String& operator+=(char c) {
+		
+		String& operator+=(char c)
+		{
 			str += c;
 			return *this;
 		}
-		String operator+(char c) const {
+
+		String operator+(char c) const
+		{
 			return String(str + c);
 		}
 		
+		String& operator+=(int val)
+		{
+    		str += std::to_string(val);
+    		return *this;
+		}
+
 		size_t indexOf(char val, size_t from) const
 		{
 			return str.find_first_of(val, from);
@@ -78,7 +90,7 @@ namespace EmotiBit
 
 		int toInt() const
 		{
-			return stoi(str); //changed from of's ofToInt to remove ofMain dependency
+			return stoi(str);
 		}
 
 	private:

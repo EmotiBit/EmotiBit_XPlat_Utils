@@ -304,29 +304,19 @@ public:
 
 	//! @brief Appends a test data message to the passed dataMessage reference for Arduino platforms
 	//! @param dataMessage reference to the String to append the test data message to
-	//! @param packetNumber reference to the packet number to increment
-	//! @param typeTags array of type tags to use in the test data message
-	//! @param dataClipping clipping value for the test data message
-	//! @param dataLength length of the data to be appended
-	//! @param isRecording flag to determine if the test data message should be appended
-	//! @return String representation of the test data message
-	//! @note tests will start when isRecording is true, and with the current implementation, the test will end at the end of the test length
-	static String appendTestDataMessage(String &dataMessage, uint16_t &packetNumber, const char *const *typeTags, uint8_t dataClipping, uint8_t dataLength);
+	//! @note Tests will start when isRecording is true, and with the current implementation, the test will end at the end of the test length
+	static void appendTestDataMessage(String &dataMessage);
 
 	//! @brief Creates a test sawtooth data message for Arduino platforms
-	//! @param dataMessage reference to the String to append the test sawtooth data to
-	//! @param packetNumber reference to the packet number to increment
-	//! @param typeTags array of type tags to use in the test sawtooth data message
-	//! @param dataClipping clipping value for the test sawtooth data message
-	//! @param dataLength length of the data to be appended
-	//! @param state future use when specifying packet length, currently unused
+	//! @param outLength reference to an int to store the length of the created sawtooth data message
 	//! @return String representation of the test sawtooth data message
-	static String createTestSawtoothData(String &dataMessage, uint16_t &packetNumber, const char *const *typeTags, uint8_t dataClipping, uint8_t dataLength, uint8_t state);
+	static String createTestSawtoothData(int& outLength);
+
 
 	//! @brief Tests the conversion of headers to a String for Arduino platforms
+	//! @param dataLength Length of the data to be included in the header
 	//! @return String representation of the test header
 	//! @note This function is used to verify the header conversion functionality after removing the OF dependency
-	static String testHeaderToString();
-private:
-	
+	static String createTestHeader(uint16_t dataLength);
+	private:
 };
