@@ -186,10 +186,10 @@ bool testAddStdString()
     String result = str1 + str2;
     if (!(result == "testing"))
     {
-        std::cout << "bool testAddStdString failed" << std::endl;
+        std::cout << "testAddStdString failed" << std::endl;
         return false;
     }
-    std::cout << "bool testAddStdString successful" << std::endl;
+    std::cout << "testAddStdString successful" << std::endl;
     return true;
 }
 
@@ -314,7 +314,8 @@ bool testToInt()
 
 
 int main() {
-    bool results[] = {
+    bool results[] =
+    {
         testEmptyString(),
         testString(),
         testUint32ToString(),
@@ -335,6 +336,10 @@ int main() {
     };
 
     bool any_fail = false;
+    for (bool result : results)
+    {
+        if (!result) any_fail = true;
+    }
 
     if (any_fail) 
     {
