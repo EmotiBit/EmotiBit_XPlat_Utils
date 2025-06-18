@@ -1,6 +1,6 @@
 /**************************************************************************/
 /*!
-    @file     EmotiBitDataTester.cpp
+    @file     main.cpp
     @author   Joseph Jacobson (EmotiBit)
 
     @mainpage Data tester for EmotiBit to generate test data packets
@@ -39,27 +39,11 @@
 int main() {
     String dataMessage;
     uint16_t packetNumber = 0;
-
-    // Define the type tags for the test data, can be used to expand the test data in the future
-    const char* typeTags[] = {
-        EmotiBitPacket::TypeTag::PPG_INFRARED,
-        EmotiBitPacket::TypeTag::PPG_RED,
         EmotiBitPacket::TypeTag::PPG_GREEN,
         EmotiBitPacket::TypeTag::EDA,
         EmotiBitPacket::TypeTag::EDL,
         EmotiBitPacket::TypeTag::EDR,
         EmotiBitPacket::TypeTag::TEMPERATURE_0,
-        EmotiBitPacket::TypeTag::HUMIDITY_0,
-        EmotiBitPacket::TypeTag::ACCELEROMETER_X,
-        EmotiBitPacket::TypeTag::ACCELEROMETER_Y,
-        EmotiBitPacket::TypeTag::ACCELEROMETER_Z,
-        EmotiBitPacket::TypeTag::GYROSCOPE_X,
-        EmotiBitPacket::TypeTag::GYROSCOPE_Y,
-        EmotiBitPacket::TypeTag::GYROSCOPE_Z,
-        EmotiBitPacket::TypeTag::MAGNETOMETER_X,
-        EmotiBitPacket::TypeTag::MAGNETOMETER_Y,
-        EmotiBitPacket::TypeTag::MAGNETOMETER_Z
-    };
     uint8_t clipping = 0;
     uint32_t x = 0;
 
@@ -69,8 +53,8 @@ int main() {
         return 1;
     }
 
-    while (x <= EmotiBitPacket::maxTestLength + 1) {
-        EmotiBitPacket::appendTestDataMessage(dataMessage);
+    while (x <= EmotiBitPacket::maxTestLength + 2) { // Loop until maxTestLength + 2 to account for the first and last messages
+        EmotiBitPacket::createTestDataPacket(dataMessage);
         testfile << dataMessage.str;
         x++;
     }

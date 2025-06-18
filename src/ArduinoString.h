@@ -19,6 +19,11 @@ namespace EmotiBit
 			str = s;
 		}
 
+		String(uint32_t i)
+		{
+    		str = std::to_string(i);
+		}
+
 		String& operator=(const String& s) {
 			str = s.str;
 			return *this;
@@ -46,11 +51,12 @@ namespace EmotiBit
 			return String(str + s.str);
 		}
 
+		
 		String operator+(const string& s) const
 		{
 			return String(str + s);
 		}
-		
+
 		String& operator+=(char c)
 		{
 			str += c;
@@ -93,6 +99,7 @@ namespace EmotiBit
 			return stoi(str);
 		}
 
+		
 	private:
 	};
 }
