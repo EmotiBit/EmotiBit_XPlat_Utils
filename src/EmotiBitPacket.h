@@ -336,7 +336,8 @@ public:
 	//! @param data Template parameter T for the data to include in the packet
 	//! @return String representation of the packet
 	template <typename T>
-	static String createPacket(const Header& header, const T& data) {
+	static String createPacket(const Header& header, const T& data)
+	{
 		uint16_t dataLength = header.dataLength;
 		if (dataLength == 0)
 			return EmotiBitPacket::headerToString(header) + EmotiBitPacket::PACKET_DELIMITER_CSV;
@@ -367,5 +368,5 @@ public:
 	//! @note This function is used to verify the header conversion functionality after removing the OF dependency
 	static EmotiBitPacket::Header createTestHeader(uint16_t dataLength);
 	
-	private:
+private:
 };
