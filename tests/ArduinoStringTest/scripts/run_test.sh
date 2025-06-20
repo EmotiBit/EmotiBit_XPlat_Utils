@@ -3,11 +3,16 @@ set -u
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-BUILD_DIR="$PROJECT_ROOT/build/Release"
-EXECUTABLE="$BUILD_DIR/ArduinoStringTest"
 
-if [[ ! -x "$EXECUTABLE" ]]; then
-    echo "Executable not found or not executable: $EXECUTABLE"
+mkdir -p "$PROJECT_ROOT/build"
+cd "$PROJECT_ROOT/build"
+cmake ..
+cmake --build . --config Release
+
+EXECUTABLE="$PROJECT_ROOT/build/Release/ArduinoStringTest.exe"
+
+if [[ ! -f "$EXECUTABLE" ]]; then
+    echo "Executable not found: $EXECUTABLE"
     exit 1
 fi
 

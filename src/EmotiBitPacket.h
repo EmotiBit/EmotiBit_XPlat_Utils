@@ -284,6 +284,8 @@ public:
 
 
 #ifdef ARDUINO
+	//! @note This function is deprecated, use createPacket(string Header, const string &data) instead
+	[[deprecated("Use createPacket(string Header, const string &data) instead")]]
 	static String createPacket(const String &typeTag, const uint16_t &packetNumber, const String &data, const uint16_t &dataLength, const uint8_t &protocolVersion = 1, const uint8_t &dataReliability = 100);
 #else
   //! @brief Adds an element to the passed payload reference
