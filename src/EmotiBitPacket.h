@@ -331,7 +331,7 @@ public:
 	//! @return string representation of the header
 	//! @note This fuction is used as a helper function to maintain compatibility with the OF platform
 	static EmotiBitPacket::Header createHeaderWithTime(const string &typeTag, const uint16_t &packetNumber, const uint16_t &dataLength, const uint8_t& protocolVersion, const uint8_t& dataReliability);
-	#endif
+#endif
 
 	//! @brief Creates a packet with the passed header- of type header, and data- of either type String or std::string
 	//! @param header Type EmotiBitPacket::Header for the header of the packet
