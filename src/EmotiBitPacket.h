@@ -338,7 +338,7 @@ public:
 	//! @param data Template parameter T for the data to include in the packet
 	//! @return String representation of the packet
 	template <typename T>
-	static String createPacket(const Header& header, const T& data)
+	static T createPacket(const Header& header, const T& data)
 	{
 		uint16_t dataLength = header.dataLength;
 		if (dataLength == 0)
@@ -349,7 +349,9 @@ public:
 		result += EmotiBitPacket::PAYLOAD_DELIMITER;
 		result += String(data);
 		result += EmotiBitPacket::PACKET_DELIMITER_CSV;
-		return result;
+		//return result as a template;
+		T resultT = result;
+		return resultT;
 		}
 	}
 

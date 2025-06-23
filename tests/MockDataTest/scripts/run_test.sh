@@ -3,6 +3,19 @@ set -u
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+mkdir -p "$PROJECT_ROOT/build"
+cd "$PROJECT_ROOT/build"
+cmake ..
+cmake --build . --config Release
+
+EXECUTABLE="$PROJECT_ROOT/build/Release/MockDataTest.exe"
+
+if [[ ! -f "$EXECUTABLE" ]]; then
+    echo "Executable not found: $EXECUTABLE"
+    exit 1
+fi
+
 TEST_FILE="$PROJECT_ROOT/build/Release/test.csv"
 EMOTIBIT_CSV=""
 

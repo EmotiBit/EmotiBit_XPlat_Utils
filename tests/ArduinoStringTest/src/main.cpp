@@ -312,6 +312,20 @@ bool testToInt()
     return true;
 }
 
+//! @brief Test function to test return operator for converting to std::string
+//! @return Boolean true if the test passes, false if it fails
+bool testStdStringReturnOperator()
+{
+    String str = "test";
+    std::string stdStr = str;
+    if (stdStr != "test")
+    {
+        std::cout << "testStdStringReturnOperator failed" << std::endl;
+        return false;
+    }
+    std::cout << "testStdStringReturnOperator successful" << std::endl;
+    return true;
+}
 
 int main() {
     bool results[] =
@@ -332,7 +346,8 @@ int main() {
         testSubstring(),
         testEquals(),
         testLength(),
-        testToInt()
+        testToInt(),
+        testStdStringReturnOperator()
     };
 
     bool any_fail = false;

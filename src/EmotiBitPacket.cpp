@@ -6,8 +6,7 @@
 	#include "ofMain.h"
 #else
 
-#endif // !ARDUINO
-
+#endif // !ARDUINO && !OF_MAIN_H
 
 // EmotiBit Data TagTypes
 const char* EmotiBitPacket::TypeTag::EDA = "EA\0";
@@ -447,7 +446,7 @@ string EmotiBitPacket::createPacket(const string &typeTag, const uint16_t &packe
 {
 
 	EmotiBitPacket::Header header = EmotiBitPacket::createHeaderWithTime(typeTag, packetNumber, dataLength, protocolVersion, dataReliability);
-	std::string packet = EmotiBitPacket::createPacket(header, data).str;
+	std::string packet = EmotiBitPacket::createPacket(header, data);
 	return packet;
 }
 
@@ -474,7 +473,7 @@ EmotiBitPacket::Header EmotiBitPacket::createHeaderWithTime(const string &typeTa
 	uint32_t time = ofGetElapsedTimeMillis();
 	#else 
 	uint32_t time = 0;
-	#endif
+	#endif 
 
 	EmotiBitPacket::Header header = EmotiBitPacket::createHeader(typeTag, time, packetNumber, dataLength, protocolVersion, dataReliability);
 	return header;

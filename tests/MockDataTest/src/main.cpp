@@ -39,11 +39,6 @@
 int main() {
     String dataMessage;
     uint16_t packetNumber = 0;
-        EmotiBitPacket::TypeTag::PPG_GREEN,
-        EmotiBitPacket::TypeTag::EDA,
-        EmotiBitPacket::TypeTag::EDL,
-        EmotiBitPacket::TypeTag::EDR,
-        EmotiBitPacket::TypeTag::TEMPERATURE_0,
     uint8_t clipping = 0;
     uint32_t x = 0;
 

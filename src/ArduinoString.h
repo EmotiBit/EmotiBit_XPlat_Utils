@@ -98,7 +98,10 @@ namespace EmotiBit
 		{
 			return stoi(str);
 		}
-
+		
+		operator std::string() const { 
+			return str; 
+		}
 		
 	private:
 	};
