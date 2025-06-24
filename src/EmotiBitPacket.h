@@ -17,7 +17,7 @@
 
 class EmotiBitPacket {
 public:
-
+	static const uint32_t maxTestLength;
 	// Platform independent fields
 	// ToDo: Needs some refactoring for direct binary transmision
 	class Header {
@@ -284,6 +284,8 @@ public:
 
 
 #ifdef ARDUINO
+	//! @note This function is deprecated, use createPacket(string Header, const string &data) instead
+	[[deprecated("Use createPacket(string Header, const string &data) instead")]]
 	static String createPacket(const String &typeTag, const uint16_t &packetNumber, const String &data, const uint16_t &dataLength, const uint8_t &protocolVersion = 1, const uint8_t &dataReliability = 100);
 #else
   //! @brief Adds an element to the passed payload reference
@@ -297,10 +299,78 @@ public:
 	}
 	//static void addToPayload(const char* element, std::stringstream &payload, uint16_t &payloadLen);
 
+	//! @brief Creates a packet with the passed typeTag, packetNumber, data and dataLength, protocolVersion and dataReliability
+	//! @param typeTag EmotiBit TypeTag to use for the packet header
+	//! @param packetNumber Packet number to use for the packet header
+	//! @param data Data to include in the packet
+	//! @param dataLength Length of the data to include in the packet
+	//! @param protocolVersion Protocol version to use for the packet header
+	//! @param dataReliability Data reliability to use for the packet header
+	//! @return string representation of the packet
+	//! @note This function is deprecated, use createPacket(string Header, const string &data) instead
+	[[deprecated("Use createPacket(string Header, const string &data) instead")]]
 	static string createPacket(const string &typeTag, const uint16_t &packetNumber, const string &data, const uint16_t &dataLength, const uint8_t &protocolVersion = 1, const uint8_t &dataReliability = 100);
-	static string createPacket(const string &typeTag, const uint16_t &packetNumber, const vector<string> &data, const uint8_t &protocolVersion = 1, const uint8_t &dataReliability = 100);
-  
-#endif
-private:
 	
+	//! @brief Creates a packet with the passed typeTag, packetNumber, data vector, protocolVersion and dataReliability
+	//! @param typeTag EmotiBit TypeTag to use for the packet header
+	//! @param packetNumber Packet number to use for the packet header
+	//! @param data Data vector to include in the packet
+	//! @param protocolVersion Protocol version to use for the packet header
+	//! @param dataReliability Data reliability to use for the packet header
+	//! @return string representation of the packet
+	//! @note This function is deprecated, use createPacket(string Header, const string &data) instead
+	[[deprecated("Use createPacket(string Header, const string &data) instead")]]
+	static string createPacket(const string &typeTag, const uint16_t &packetNumber, const vector<string> &data, const uint8_t &protocolVersion = 1, const uint8_t &dataReliability = 100);
+	
+	//! @brief Creates a header with an assigned time for OF platforms
+	//! @param typeTag EmotiBit TypeTag to use for the packet header
+	//! @param packetNumber Packet number to use for the packet header
+	//! @param dataLength Length of the data to include in the packet header
+	//! @param protocolVersion Protocol version to use for the packet header
+	//! @param dataReliability Data reliability to use for the packet header
+	//! @return string representation of the header
+	//! @note This fuction is used as a helper function to maintain compatibility with the OF platform
+	static EmotiBitPacket::Header createHeaderWithTime(const string &typeTag, const uint16_t &packetNumber, const uint16_t &dataLength, const uint8_t& protocolVersion, const uint8_t& dataReliability);
+#endif
+
+	//! @brief Creates a packet with the passed header- of type header, and data- of either type String or std::string
+	//! @param header Type EmotiBitPacket::Header for the header of the packet
+	//! @param data Template parameter T for the data to include in the packet
+	//! @return String representation of the packet
+	template <typename T>
+	static T createPacket(const Header& header, const T& data)
+	{
+		uint16_t dataLength = header.dataLength;
+		if (dataLength == 0)
+			return EmotiBitPacket::headerToString(header) + EmotiBitPacket::PACKET_DELIMITER_CSV;
+		else
+		{
+		String result = headerToString(header);
+		result += EmotiBitPacket::PAYLOAD_DELIMITER;
+		result += String(data);
+		result += EmotiBitPacket::PACKET_DELIMITER_CSV;
+		//return result as a template;
+		T resultT = result;
+		return resultT;
+		}
+	}
+
+	//! @brief Appends a test data message to the passed dataMessage reference
+	//! @param dataMessage reference to the String to append the test data message to
+	//! @note Tests will start when isRecording is true, and with the current implementation, the test will end at the end of the test length
+	static void createTestDataPacket(String &dataMessage);
+
+	//! @brief Creates a test sawtooth data message 
+	//! @param outLength reference to an int to store the length of the created sawtooth data message
+	//! @return String representation of the test sawtooth data message
+	static String createTestSawtoothData(int& outLength);
+
+
+	//! @brief Tests the conversion of headers to a String 
+	//! @param dataLength Length of the data to be included in the header
+	//! @return String representation of the test header
+	//! @note This function is used to verify the header conversion functionality after removing the OF dependency
+	static EmotiBitPacket::Header createTestHeader(uint16_t dataLength);
+	
+private:
 };

@@ -2,11 +2,11 @@
 
 #ifdef ARDUINO
 	#include <Arduino.h>
-#else
-	// ToDo: Remove OF dependency for ofToString()
+#elif OF_MAIN_H
 	#include "ofMain.h"
-#endif // !ARDUINO
+#else
 
+#endif // !ARDUINO && !OF_MAIN_H
 
 // EmotiBit Data TagTypes
 const char* EmotiBitPacket::TypeTag::EDA = "EA\0";
@@ -116,6 +116,9 @@ const char* const EmotiBitPacket::TypeTagGroups::COMPOSITE_PAYLOAD[] =
 	EmotiBitPacket::TypeTag::LSL_MARKER
 };
 uint8_t EmotiBitPacket::TypeTagGroups::NUM_COMPOSITE_PAYLOAD = sizeof(EmotiBitPacket::TypeTagGroups::COMPOSITE_PAYLOAD) / sizeof(EmotiBitPacket::TypeTagGroups::COMPOSITE_PAYLOAD[0]);
+
+const uint32_t EmotiBitPacket::maxTestLength = 200; // testing value
+
 #ifdef ARDUINO
 	const String EmotiBitPacket::TIMESTAMP_STRING_FORMAT = "%Y-%m-%d_%H-%M-%S-%f";
 #else
@@ -328,19 +331,20 @@ String EmotiBitPacket::headerToString(const Header &header)
 #else
 string EmotiBitPacket::headerToString(const Header &header)
 {
+	//Refactored to use to_string instead of ofToString
 	string headerString;
 	headerString = "";
-	headerString += ofToString(header.timestamp);
+	headerString += to_string(header.timestamp);
 	headerString += EmotiBitPacket::PAYLOAD_DELIMITER;
-	headerString += ofToString(header.packetNumber);
+	headerString += to_string(header.packetNumber);
 	headerString += EmotiBitPacket::PAYLOAD_DELIMITER;
-	headerString += ofToString(header.dataLength);
+	headerString += to_string(header.dataLength);
 	headerString += EmotiBitPacket::PAYLOAD_DELIMITER;
-	headerString += ofToString(header.typeTag);
+	headerString += header.typeTag; //directly using string
 	headerString += EmotiBitPacket::PAYLOAD_DELIMITER;
-	headerString += ofToString((int)header.protocolVersion);
+	headerString += to_string((int)header.protocolVersion);
 	headerString += EmotiBitPacket::PAYLOAD_DELIMITER;
-	headerString += ofToString((int)header.dataReliability);
+	headerString += to_string((int)header.dataReliability);
 #endif
 	//createPacketHeader(tempHeader, timestamp, typeTag, dataLen);
 	return headerString;
@@ -440,23 +444,20 @@ int16_t EmotiBitPacket::getPacketKeyedValue(const vector<string> &splitPacket, c
 
 string EmotiBitPacket::createPacket(const string &typeTag, const uint16_t &packetNumber, const string &data, const uint16_t &dataLength, const uint8_t& protocolVersion, const uint8_t& dataReliability)
 {
-	// ToDo: Generalize createPacket to work across more platforms inside EmotiBitPacket
-	EmotiBitPacket::Header header = EmotiBitPacket::createHeader(typeTag, ofGetElapsedTimeMillis(), packetNumber, dataLength, protocolVersion, dataReliability);
-	if (dataLength == 0)
-	{
-		return EmotiBitPacket::headerToString(header) + EmotiBitPacket::PACKET_DELIMITER_CSV;
-	}
-	else
-	{
-		return EmotiBitPacket::headerToString(header) + EmotiBitPacket::PAYLOAD_DELIMITER + data + EmotiBitPacket::PACKET_DELIMITER_CSV;
-	}
+
+	EmotiBitPacket::Header header = EmotiBitPacket::createHeaderWithTime(typeTag, packetNumber, dataLength, protocolVersion, dataReliability);
+	std::string packet = EmotiBitPacket::createPacket(header, data);
+	return packet;
 }
+
 
 string EmotiBitPacket::createPacket(const string &typeTag, const uint16_t &packetNumber, const vector<string> & data, const uint8_t &protocolVersion, const uint8_t &dataReliability)
 {
 	// ToDo: Template data vector
 	// ToDo: Generalize createPacket to work across more platforms inside EmotiBitPacket
-	EmotiBitPacket::Header header = EmotiBitPacket::createHeader(typeTag, ofGetElapsedTimeMillis(), packetNumber, data.size(), protocolVersion, dataReliability);
+	uint16_t dataLength = data.size();
+	EmotiBitPacket::Header header = EmotiBitPacket::createHeaderWithTime(typeTag, packetNumber, dataLength, protocolVersion, dataReliability);
+
 	string packet = EmotiBitPacket::headerToString(header);
 	for (string s : data)
 	{
@@ -466,4 +467,89 @@ string EmotiBitPacket::createPacket(const string &typeTag, const uint16_t &packe
 	return packet;
 }
 
+EmotiBitPacket::Header EmotiBitPacket::createHeaderWithTime(const string &typeTag, const uint16_t &packetNumber, const uint16_t &dataLength, const uint8_t& protocolVersion, const uint8_t& dataReliability)
+{
+	#ifdef OF_MAIN_H
+	uint32_t time = ofGetElapsedTimeMillis();
+	#else 
+	uint32_t time = 0;
+	#endif 
+
+	EmotiBitPacket::Header header = EmotiBitPacket::createHeader(typeTag, time, packetNumber, dataLength, protocolVersion, dataReliability);
+	return header;
+}
+
 #endif
+
+void EmotiBitPacket::createTestDataPacket(String &dataMessage)
+{
+	//ToDo: Edit function to be more modular in the future so we can add more test data messages
+    static bool firstMessage = true;
+    static int testCount = 0;
+    dataMessage = "";
+
+	// First message to signify start of test
+    if (firstMessage)
+	{
+        firstMessage = false;
+        EmotiBitPacket::Header beginHeader = EmotiBitPacket::createHeader(EmotiBitPacket::TypeTag::USER_NOTE, 0, 0, 1, 0, 0);
+		String data = String(maxTestLength);
+		dataMessage = EmotiBitPacket::createPacket(beginHeader, data);
+	}
+
+    else if (testCount <= EmotiBitPacket::maxTestLength)
+	{
+        int dataLength = 0;
+		
+		String data = EmotiBitPacket::createTestSawtoothData(dataLength); //Set data first so dataLength is set for the header
+		EmotiBitPacket::Header header = EmotiBitPacket::createTestHeader(dataLength); 
+
+		dataMessage = EmotiBitPacket::createPacket(header, data);
+        testCount++;
+    }
+
+	// End case to visually signal end of test
+	else if (testCount == EmotiBitPacket::maxTestLength + 1)
+	{
+		EmotiBitPacket:: Header endHeader = EmotiBitPacket::createHeader(EmotiBitPacket::TypeTag::EDA, 0, 0, 1, 0, 0);
+		String data = String(0);
+		dataMessage = EmotiBitPacket::createPacket(endHeader, data);
+		testCount++;
+	}
+
+}
+
+String EmotiBitPacket::createTestSawtoothData(int& outLength)
+{
+    String payload;
+
+    int numValues = 10; // Number of values to generate
+    int minVal = 0; // Minimum value
+    int maxVal = 100; // Maximum value
+	for (uint8_t i = 0; i < numValues; ++i)
+	{
+        if (i > 0) payload += EmotiBitPacket::PAYLOAD_DELIMITER;
+        int value = minVal + ((maxVal - minVal) * i) / (numValues - 1);
+        payload += value;
+    }
+	outLength = numValues;
+    return payload;
+}
+
+EmotiBitPacket::Header EmotiBitPacket::createTestHeader(uint16_t dataLength)
+{
+	static uint32_t timestamp = 0;
+    static uint16_t packetNumber = 0;
+    static uint8_t protocolVersion = 0;
+    static uint8_t dataReliability = 0;
+
+    EmotiBitPacket::Header header = EmotiBitPacket::createHeader(
+        EmotiBitPacket::TypeTag::EDA,
+		timestamp++,
+        packetNumber++,
+        dataLength,
+        protocolVersion++,
+        dataReliability++
+    );
+    return header;
+}
