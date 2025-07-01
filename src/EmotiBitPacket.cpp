@@ -67,6 +67,7 @@ const char* EmotiBitPacket::TypeTag::MODE_LOW_POWER = "ML\0";				// Stops sendin
 const char* EmotiBitPacket::TypeTag::MODE_MAX_LOW_POWER = "MM\0";		// Stops sending data timestamping accuracy drops
 const char* EmotiBitPacket::TypeTag::MODE_WIRELESS_OFF = "MO\0";				// Stops sending data timestamping should be accurate
 const char* EmotiBitPacket::TypeTag::MODE_HIBERNATE = "MH\0";				// Full shutdown of all operation
+const char* EmotiBitPacket::TypeTag::MODE_BLUETOOTH = "MB\0";				// Bluetooth mode
 const char* EmotiBitPacket::TypeTag::EMOTIBIT_DISCONNECT = "ED\0";
 const char* EmotiBitPacket::TypeTag::SERIAL_DATA_ON = "S+\0";
 const char* EmotiBitPacket::TypeTag::SERIAL_DATA_OFF = "S-\0";

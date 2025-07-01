@@ -197,6 +197,7 @@ public:
 		static const char* MODE_MAX_LOW_POWER;
 		static const char* MODE_WIRELESS_OFF;
 		static const char* MODE_HIBERNATE;
+		static const char* MODE_BLUETOOTH;
 		static const char* HELLO_EMOTIBIT;
 		static const char* HELLO_HOST;
 		//static const char* HELLO_COMPUTER;
