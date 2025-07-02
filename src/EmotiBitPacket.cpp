@@ -487,17 +487,18 @@ void EmotiBitPacket::createTestDataPacket(String &dataMessage)
     static bool firstMessage = true;
     static int testCount = 0;
     dataMessage = "";
-
+	bool splitterTest = true; //set true to test splitter data, false to test sawtooth data
+	//ToDo: add test type to header so we can differentiate between different tests
 	// First message to signify start of test
     if (firstMessage)
 	{
         firstMessage = false;
         EmotiBitPacket::Header beginHeader = EmotiBitPacket::createHeader(EmotiBitPacket::TypeTag::USER_NOTE, 0, 0, 1, 0, 0);
-		String data = String(maxTestLength);
+		String data = String("Test Length:") + String(maxTestLength) + EmotiBitPacket::PACKET_DELIMITER_CSV;
 		dataMessage = EmotiBitPacket::createPacket(beginHeader, data);
 	}
 
-    else if (testCount <= EmotiBitPacket::maxTestLength)
+    else if (testCount <= EmotiBitPacket::maxTestLength && splitterTest == false)
 	{
         int dataLength = 0;
 		
@@ -507,6 +508,12 @@ void EmotiBitPacket::createTestDataPacket(String &dataMessage)
 		dataMessage = EmotiBitPacket::createPacket(header, data);
         testCount++;
     }
+
+    else if (testCount <= EmotiBitPacket::maxTestLength && splitterTest == true)
+	{
+		dataMessage = EmotiBitPacket::createSplitterData(testCount);
+		testCount++;
+	}
 
 	// End case to visually signal end of test
 	else if (testCount == EmotiBitPacket::maxTestLength + 1)
@@ -534,6 +541,21 @@ String EmotiBitPacket::createTestSawtoothData(int& outLength)
     }
 	outLength = numValues;
     return payload;
+}
+
+String EmotiBitPacket::createSplitterData(int testCount)
+{
+	String packet;
+    if (testCount % 2 == 0)
+	{
+		packet = "-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------1";
+		return packet;
+	}
+	else //(testCount % 1 == 0)
+	{
+		packet = "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------2";
+		return packet;
+	}
 }
 
 EmotiBitPacket::Header EmotiBitPacket::createTestHeader(uint16_t dataLength)

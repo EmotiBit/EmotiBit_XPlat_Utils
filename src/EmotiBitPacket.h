@@ -365,6 +365,11 @@ public:
 	//! @return String representation of the test sawtooth data message
 	static String createTestSawtoothData(int& outLength);
 
+	//! @brief Creates a splitter data message
+	//! @param testCount Test count number to determine what data to send
+	//! @return String representation of the splitter data message
+	static String createSplitterData(int testCount);
+
 
 	//! @brief Tests the conversion of headers to a String 
 	//! @param dataLength Length of the data to be included in the header
