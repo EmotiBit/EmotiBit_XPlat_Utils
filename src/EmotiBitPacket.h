@@ -362,6 +362,7 @@ public:
 
 	//! @brief Appends a test data message to the passed dataMessage reference
 	//! @param dataMessage reference to the String to append the test data message to
+	//! @param testType Type of the test to create data for
 	//! @note Tests will start when isRecording is true, and with the current implementation, the test will end at the end of the test length
 	static void createTestDataPacket(String &dataMessage, const char* testType);
 
