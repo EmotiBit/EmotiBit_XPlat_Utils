@@ -18,6 +18,7 @@ fi
 
 TEST_FILE="$PROJECT_ROOT/build/Release/test.csv"
 EMOTIBIT_CSV=""
+TEST_TYPE=""
 
 if [[ ! -x "$PROJECT_ROOT/build/Release/MockDataTest" ]]; then
     echo "Executable not found or not executable: $PROJECT_ROOT/build/Release/MockDataTest"
@@ -31,6 +32,10 @@ while [[ $# -gt 0 ]]; do
             EMOTIBIT_CSV="$2"
             shift 2
             ;;
+        -t|--testtype)
+            TEST_TYPE="$2"
+            shift 2
+            ;;
         *)
             echo "Usage: $0 -e|--extension <emotibit_csv_path>"
             exit 1
@@ -42,6 +47,17 @@ if [[ -z "$EMOTIBIT_CSV" ]]; then
     echo "Error: You must specify -e or --extension <emotibit_csv_path>"
     exit 1
 fi
+
+if [[ -z "$TEST_TYPE" ]]; then
+    echo "Error: You must specify -t or --test <test_file>"
+    exit 1
+fi
+
+echo "Rebuilding and running test with type: $TEST_TYPE"
+
+cd "$PROJECT_ROOT/build/Release"
+"$EXECUTABLE" --testtype "$TEST_TYPE"
+cd "$PROJECT_ROOT/build"
 
 if [[ ! -f "$TEST_FILE" ]]; then
     echo "Test file not found: $TEST_FILE"

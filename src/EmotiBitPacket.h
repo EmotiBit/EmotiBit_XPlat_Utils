@@ -246,7 +246,12 @@ public:
 		static const char* LSL_LOCAL_CLOCK_TIMESTAMP;
 		static const char* LSL_MARKER_DATA;
 	};
-	
+	class TestType
+	{
+	public:
+		static const char* SAWTOOTH;
+		static const char* SPLITTER;
+	};
   static const char PACKET_DELIMITER_CSV;
 	static const uint16_t MAX_TO_EMOTIBIT_PACKET_LEN = 255;
 #ifdef ARDUINO
@@ -358,7 +363,7 @@ public:
 	//! @brief Appends a test data message to the passed dataMessage reference
 	//! @param dataMessage reference to the String to append the test data message to
 	//! @note Tests will start when isRecording is true, and with the current implementation, the test will end at the end of the test length
-	static void createTestDataPacket(String &dataMessage);
+	static void createTestDataPacket(String &dataMessage, const char* testType);
 
 	//! @brief Creates a test sawtooth data message 
 	//! @param outLength reference to an int to store the length of the created sawtooth data message
