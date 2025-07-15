@@ -12,7 +12,7 @@ The following table shows commands for choosing the test type. A typical workflo
 
 | Command | Details |
 |--------|--------|
-| Z | Turns on "splitter" indicator, which is a "S" that is be printed after each split|
+| Z | Turns on "splitter" indicator, which is a "S" that is printed after each split|
 | z | Turns off "splitter" indicator|
 | < | Sets "sendTestData" to true|
 | > | Sets "sendTestData" to false|
