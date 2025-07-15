@@ -546,13 +546,19 @@ String EmotiBitPacket::createSplitterData(int testCount)
 {
 	
 	String packet;
-    const int packetLen = testCount; // -2 for marker and delimiter
-    for (int i = 0; i < packetLen; i++)
+    const int packetLen = testCount; 
+    for (int i = 0; i < packetLen - 2; i++) // -2 for marker and delimiter
     {
         packet += "-";
     }
     packet += "0"; // Add marker at the end
 	packet += EmotiBitPacket::PACKET_DELIMITER_CSV; // Add delimiter
+
+// added nub
+	packet += "---------------";
+	packet += "1";
+	packet += EmotiBitPacket::PACKET_DELIMITER_CSV; // Add delimiter
+
     return packet;
 }
 
