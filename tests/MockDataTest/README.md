@@ -6,15 +6,12 @@
 The following table shows commands for choosing the test type. A typical workflow will consist of:
 1. Going into debug mode
 2. Setting sendTestData to true
-3. Choosing the test type 
+3. Choosing the Sawtooth test '#'
 4. Pressing record in the oscilliscope and waiting for the test to finish
 5. Comparing the SD card result with the bash script, specifying the extension and the test type
 
 | Command | Details |
 |--------|--------|
-| Z | Turns on "splitter" indicator, which is a "S" that is printed after each split|
-| z | Turns off "splitter" indicator|
 | < | Sets "sendTestData" to true|
 | > | Sets "sendTestData" to false|
-| @ | Sets test data to Splitter| 
 | # | Sets test data to Sawtooth (this is also the default)| 
