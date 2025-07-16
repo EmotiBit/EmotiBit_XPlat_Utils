@@ -43,6 +43,10 @@ if [[ -z "$EMOTIBIT_CSV" ]]; then
     exit 1
 fi
 
+cd "$PROJECT_ROOT/build/Release"
+"$EXECUTABLE"
+cd "$PROJECT_ROOT/build"
+
 if [[ ! -f "$TEST_FILE" ]]; then
     echo "Test file not found: $TEST_FILE"
     exit 1

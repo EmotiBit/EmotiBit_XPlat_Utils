@@ -118,7 +118,7 @@ const char* const EmotiBitPacket::TypeTagGroups::COMPOSITE_PAYLOAD[] =
 };
 uint8_t EmotiBitPacket::TypeTagGroups::NUM_COMPOSITE_PAYLOAD = sizeof(EmotiBitPacket::TypeTagGroups::COMPOSITE_PAYLOAD) / sizeof(EmotiBitPacket::TypeTagGroups::COMPOSITE_PAYLOAD[0]);
 
-const uint32_t EmotiBitPacket::maxTestLength = 200; // testing value
+const uint32_t EmotiBitPacket::maxTestLength = 512; // testing value
 
 #ifdef ARDUINO
 	const String EmotiBitPacket::TIMESTAMP_STRING_FORMAT = "%Y-%m-%d_%H-%M-%S-%f";
@@ -482,37 +482,41 @@ EmotiBitPacket::Header EmotiBitPacket::createHeaderWithTime(const string &typeTa
 
 #endif
 
-void EmotiBitPacket::createTestDataPacket(String &dataMessage)
+void EmotiBitPacket::createTestDataPacket(String &dataMessage, const char* testType)
 {
-	//ToDo: Edit function to be more modular in the future so we can add more test data messages
     static bool firstMessage = true;
     static int testCount = 0;
     dataMessage = "";
-
 	// First message to signify start of test
     if (firstMessage)
 	{
         firstMessage = false;
         EmotiBitPacket::Header beginHeader = EmotiBitPacket::createHeader(EmotiBitPacket::TypeTag::USER_NOTE, 0, 0, 1, 0, 0);
-		String data = String(maxTestLength);
+		String data = String("Test Length: ") + String(maxTestLength) + String(" Test Type: ") + testType + EmotiBitPacket::PACKET_DELIMITER_CSV;
 		dataMessage = EmotiBitPacket::createPacket(beginHeader, data);
 	}
-
-    else if (testCount <= EmotiBitPacket::maxTestLength)
+	//ToDo: Refactor testing structure to be more modular so we can add more tests easily
+    else if (testCount <= EmotiBitPacket::maxTestLength && testType == "Sawtooth")
 	{
-        int dataLength = 0;
+		int dataLength = 0;
 		
 		String data = EmotiBitPacket::createTestSawtoothData(dataLength); //Set data first so dataLength is set for the header
 		EmotiBitPacket::Header header = EmotiBitPacket::createTestHeader(dataLength); 
 
 		dataMessage = EmotiBitPacket::createPacket(header, data);
-        testCount++;
-    }
+		testCount++;
+	}
+
+    else if (testCount <= EmotiBitPacket::maxTestLength && testType == "Splitter")
+	{
+		dataMessage = EmotiBitPacket::createPacketFixedLengthTest(testCount);
+		testCount++;
+	}
 
 	// End case to visually signal end of test
 	else if (testCount == EmotiBitPacket::maxTestLength + 1)
 	{
-		EmotiBitPacket:: Header endHeader = EmotiBitPacket::createHeader(EmotiBitPacket::TypeTag::EDA, 0, 0, 1, 0, 0);
+		EmotiBitPacket::Header endHeader = EmotiBitPacket::createHeader(EmotiBitPacket::TypeTag::EDA, 0, 0, 1, 0, 0);
 		String data = String(0);
 		dataMessage = EmotiBitPacket::createPacket(endHeader, data);
 		testCount++;
@@ -535,6 +539,32 @@ String EmotiBitPacket::createTestSawtoothData(int& outLength)
     }
 	outLength = numValues;
     return payload;
+}
+
+String EmotiBitPacket::createPacketFixedLengthTest(int testCount)
+{
+    String packet;
+    String data;
+    static uint32_t timestamp = 0;
+    static uint16_t packetNumber = 0;
+    EmotiBitPacket::Header header = EmotiBitPacket::createHeader(EmotiBitPacket::TypeTag::USER_NOTE, timestamp++, packetNumber++, 1);
+
+    String headerString = EmotiBitPacket::headerToString(header);
+
+    // Calculate number of dashes needed
+    int dataLength = testCount - headerString.length() - 3; // 3 accounts for ',' + '0' + delimiter
+    if (dataLength < 0) dataLength = 0; // Prevent negative
+
+    for (int i = 0; i < dataLength; i++)
+    {
+        data += "-";
+    }
+    data += "0"; // Add marker at the end
+    data += EmotiBitPacket::PACKET_DELIMITER_CSV; // Add delimiter
+
+    packet = headerString + EmotiBitPacket::PAYLOAD_DELIMITER + data;
+
+    return packet;
 }
 
 EmotiBitPacket::Header EmotiBitPacket::createTestHeader(uint16_t dataLength)
