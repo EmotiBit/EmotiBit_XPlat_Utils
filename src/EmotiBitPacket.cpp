@@ -94,6 +94,7 @@ const char* EmotiBitPacket::PayloadLabel::LSL_LOCAL_CLOCK_TIMESTAMP = "LC\0";
 const char* EmotiBitPacket::PayloadLabel::LSL_MARKER_DATA = "LD\0";
 
 
+
 const char EmotiBitPacket::PACKET_DELIMITER_CSV = '\n';
 //const uint8_t nAperiodicTypeTags = 2;
 //const uint8_t nUserMessagesTypeTags = 1;
