@@ -246,7 +246,6 @@ public:
 		static const char* LSL_LOCAL_CLOCK_TIMESTAMP;
 		static const char* LSL_MARKER_DATA;
 	};
-
   static const char PACKET_DELIMITER_CSV;
 	static const uint16_t MAX_TO_EMOTIBIT_PACKET_LEN = 255;
 #ifdef ARDUINO
@@ -366,7 +365,7 @@ public:
 	//! @return String representation of the test sawtooth data message
 	static String createTestSawtoothData(int& outLength);
 
-	//! @brief Creates a splitter data message
+	//! @brief Creates test data that iterates in increasing length to test splitting functionality
 	//! @param testCount Test count number to determine what data to send
 	//! @return String representation of the splitter data message
 	static String createPacketFixedLengthTest(int testCount);

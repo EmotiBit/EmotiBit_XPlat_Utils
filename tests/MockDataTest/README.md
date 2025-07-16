@@ -8,7 +8,7 @@ The following table shows commands for choosing the test type. A typical workflo
 2. Setting sendTestData to true
 3. Choosing the Sawtooth test '#'
 4. Pressing record in the oscilliscope and waiting for the test to finish
-5. Comparing the SD card result with the bash script, specifying the extension and the test type
+5. Comparing the SD card result with the bash script, specifying the extension
 
 | Command | Details |
 |--------|--------|

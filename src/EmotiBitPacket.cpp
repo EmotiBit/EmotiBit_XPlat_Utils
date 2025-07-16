@@ -485,7 +485,6 @@ void EmotiBitPacket::createTestDataPacket(String &dataMessage, const char* testT
     static bool firstMessage = true;
     static int testCount = 0;
     dataMessage = "";
-	//ToDo: add test type to header so we can differentiate between different tests
 	// First message to signify start of test
     if (firstMessage)
 	{
@@ -497,14 +496,14 @@ void EmotiBitPacket::createTestDataPacket(String &dataMessage, const char* testT
 	//ToDo: Refactor testing structure to be more modular so we can add more tests easily
     else if (testCount <= EmotiBitPacket::maxTestLength && testType == "Sawtooth")
 	{
-        int dataLength = 0;
+		int dataLength = 0;
 		
 		String data = EmotiBitPacket::createTestSawtoothData(dataLength); //Set data first so dataLength is set for the header
 		EmotiBitPacket::Header header = EmotiBitPacket::createTestHeader(dataLength); 
 
 		dataMessage = EmotiBitPacket::createPacket(header, data);
-        testCount++;
-    }
+		testCount++;
+	}
 
     else if (testCount <= EmotiBitPacket::maxTestLength && testType == "Splitter")
 	{
