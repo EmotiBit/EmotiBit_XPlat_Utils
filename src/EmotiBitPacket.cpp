@@ -518,8 +518,7 @@ void EmotiBitPacket::createTestDataPacket(String &dataMessage, const char* testT
 		EmotiBitPacket::Header endHeader = EmotiBitPacket::createHeader(EmotiBitPacket::TypeTag::EDA, 0, 0, 1, 0, 0);
 		String data = String(0);
 		dataMessage = EmotiBitPacket::createPacket(endHeader, data);
-		//testCount++;
-		testCount = 0; // Reset testCount for next test
+		testCount++;
 	}
 
 }
