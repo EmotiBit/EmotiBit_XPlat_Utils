@@ -506,7 +506,7 @@ void EmotiBitPacket::createTestDataPacket(String &dataMessage, const char* testT
 		testCount++;
 	}
 
-    else if (testCount <= EmotiBitPacket::maxTestLength && testType == "Splitter")
+	else if (testCount <= EmotiBitPacket::maxTestLength && testType == "Splitter")
 	{
 		dataMessage = EmotiBitPacket::createPacketFixedLengthTest(testCount);
 		testCount++;
