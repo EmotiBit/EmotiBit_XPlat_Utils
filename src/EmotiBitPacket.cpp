@@ -553,7 +553,7 @@ String EmotiBitPacket::createTestPacketFixedLength(int testCount)
 	String headerString = EmotiBitPacket::headerToString(header);
 
 	// Calculate number of dashes needed
-	int dataLength = testCount - (int)headerString.length() - payloadLengthOffset; //check this on pr
+	int dataLength = testCount - (int)headerString.length() - payloadLengthOffset;
 	if (dataLength < 0) dataLength = 0; // Prevent negative
 
 	for (int i = 0; i < dataLength; i++)
