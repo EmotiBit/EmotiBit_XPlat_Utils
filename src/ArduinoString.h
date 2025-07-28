@@ -70,8 +70,8 @@ namespace EmotiBit
 		
 		String& operator+=(int val)
 		{
-    		str += std::to_string(val);
-    		return *this;
+    			str += std::to_string(val);
+    			return *this;
 		}
 
 		size_t indexOf(char val, size_t from) const

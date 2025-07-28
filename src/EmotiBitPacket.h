@@ -254,6 +254,11 @@ public:
 	static const string TIMESTAMP_STRING_FORMAT;
 #endif
 
+enum TestType {
+	FIXEDPACKETLENGTHTEST,
+	SAWTOOTHTEST
+};
+
 	EmotiBitPacket();
 
 	
@@ -358,7 +363,7 @@ public:
 	//! @param dataMessage reference to the String to append the test data message to
 	//! @param testType Type of the test to create data for
 	//! @note Tests will start when isRecording is true, and with the current implementation, the test will end at the end of the test length
-	static void createTestDataPacket(String &dataMessage, const char* testType = "Sawtooth"); //default to Sawtooth
+	static void createTestDataPacket(String &dataMessage, TestType testType = TestType::SAWTOOTHTEST);
 
 	//! @brief Creates a test sawtooth data message 
 	//! @param outLength reference to an int to store the length of the created sawtooth data message
@@ -368,7 +373,7 @@ public:
 	//! @brief Creates test data that iterates in increasing length to test splitting functionality
 	//! @param testCount Test count number to determine what data to send
 	//! @return String representation of the splitter data message
-	static String createPacketFixedLengthTest(int testCount);
+	static String createTestPacketFixedLength(int testCount);
 
 
 	//! @brief Tests the conversion of headers to a String 
