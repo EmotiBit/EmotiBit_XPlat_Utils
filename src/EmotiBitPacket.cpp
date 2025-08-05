@@ -495,7 +495,7 @@ void EmotiBitPacket::createTestDataPacket(String &dataMessage, TestType testType
 		dataMessage = EmotiBitPacket::createPacket(beginHeader, data);
 	}
 	//ToDo: Refactor testing structure to be more modular so we can add more tests easily
-	else if (testCount <= EmotiBitPacket::maxTestLength && testType == TestType::SAWTOOTHTEST)
+	else if (testCount <= EmotiBitPacket::maxTestLength && testType == TestType::SAWTOOTH)
 	{
 		int dataLength = 0;
 		
@@ -506,7 +506,7 @@ void EmotiBitPacket::createTestDataPacket(String &dataMessage, TestType testType
 		testCount++;
 	}
 
-	else if (testCount <= EmotiBitPacket::maxTestLength && testType == TestType::FIXEDPACKETLENGTHTEST) // Change splitter to fixedlength
+	else if (testCount <= EmotiBitPacket::maxTestLength && testType == TestType::FIXED_PACKET_LENGTH) // Change splitter to fixedlength
 	{
 		dataMessage = EmotiBitPacket::createTestPacketFixedLength(testCount);
 		testCount++;

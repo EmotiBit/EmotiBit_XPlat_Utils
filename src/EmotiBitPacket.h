@@ -255,8 +255,8 @@ public:
 #endif
 
 enum TestType {
-	FIXEDPACKETLENGTHTEST,
-	SAWTOOTHTEST
+	FIXED_PACKET_LENGTH,
+	SAWTOOTH
 };
 
 	EmotiBitPacket();
@@ -363,7 +363,7 @@ enum TestType {
 	//! @param dataMessage reference to the String to append the test data message to
 	//! @param testType Type of the test to create data for
 	//! @note Tests will start when isRecording is true, and with the current implementation, the test will end at the end of the test length
-	static void createTestDataPacket(String &dataMessage, TestType testType = TestType::SAWTOOTHTEST);
+	static void createTestDataPacket(String &dataMessage, TestType testType = TestType::SAWTOOTH);
 
 	//! @brief Creates a test sawtooth data message 
 	//! @param outLength reference to an int to store the length of the created sawtooth data message
