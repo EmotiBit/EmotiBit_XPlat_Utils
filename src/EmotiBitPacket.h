@@ -371,9 +371,9 @@ enum TestType {
 	static String createTestSawtoothData(int& outLength);
 
 	//! @brief Creates test data that iterates in increasing length to test splitting functionality
-	//! @param testCount Test count number to determine what data to send
+	//! @param payloadLength payload length of the packet to create
 	//! @return String representation of the splitter data message
-	static String createTestPacketFixedLength(int testCount);
+	static String createTestPacketFixedLength(int payloadLength);
 
 
 	//! @brief Tests the conversion of headers to a String 
