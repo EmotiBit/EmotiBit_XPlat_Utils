@@ -49,7 +49,7 @@ int main() {
     }
 
     while (x <= EmotiBitPacket::maxTestLength + 2) { // Loop until maxTestLength + 2 to account for the first and last messages
-        EmotiBitPacket::createTestDataPacket(dataMessage);
+        EmotiBitPacket::createTestDataPacket(dataMessage, EmotiBitPacket::TestType::SAWTOOTH);
         testfile << dataMessage.str;
         x++;
     }

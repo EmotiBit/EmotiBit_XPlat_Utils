@@ -246,7 +246,6 @@ public:
 		static const char* LSL_LOCAL_CLOCK_TIMESTAMP;
 		static const char* LSL_MARKER_DATA;
 	};
-	
   static const char PACKET_DELIMITER_CSV;
 	static const uint16_t MAX_TO_EMOTIBIT_PACKET_LEN = 255;
 #ifdef ARDUINO
@@ -254,6 +253,11 @@ public:
 #else
 	static const string TIMESTAMP_STRING_FORMAT;
 #endif
+
+enum TestType {
+	FIXED_PACKET_LENGTH,
+	SAWTOOTH
+};
 
 	EmotiBitPacket();
 
@@ -357,13 +361,19 @@ public:
 
 	//! @brief Appends a test data message to the passed dataMessage reference
 	//! @param dataMessage reference to the String to append the test data message to
+	//! @param testType Type of the test to create data for
 	//! @note Tests will start when isRecording is true, and with the current implementation, the test will end at the end of the test length
-	static void createTestDataPacket(String &dataMessage);
+	static void createTestDataPacket(String &dataMessage, TestType testType = TestType::SAWTOOTH);
 
 	//! @brief Creates a test sawtooth data message 
 	//! @param outLength reference to an int to store the length of the created sawtooth data message
 	//! @return String representation of the test sawtooth data message
 	static String createTestSawtoothData(int& outLength);
+
+	//! @brief Creates test data that iterates in increasing length to test splitting functionality
+	//! @param payloadLength payload length of the packet to create
+	//! @return String representation of the splitter data message
+	static String createTestPacketFixedLength(int payloadLength);
 
 
 	//! @brief Tests the conversion of headers to a String 
